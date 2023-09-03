@@ -1,6 +1,6 @@
 # NOTCH AI: Empowering Wellness AI
 
-<img alt="image" src="./assets/gene1.jpg">
+<img alt="image" src="./assets/images/gene1.jpg">
 
 
 Welcome to NotchAI, where innovation meets healthcare. We're dedicated to revolutionizing the medical landscape with cutting-edge AI solutions. Our mission is to provide accessible, accurate, and timely health insights to empower individuals in managing their well-being.
