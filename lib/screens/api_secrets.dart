@@ -1,0 +1,1 @@
+const stableDiffusionModelAPIKey = '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';

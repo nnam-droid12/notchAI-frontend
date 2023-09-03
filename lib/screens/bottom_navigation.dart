@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:notchai_frontend/screens/ai_doctor.dart';
+import 'package:notchai_frontend/screens/appointment.dart';
+import 'package:notchai_frontend/screens/health_news.dart';
 import 'package:notchai_frontend/screens/home_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -12,9 +15,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int currentpageIndex = 0;
   final List<Widget> _widgetScreen = <Widget>[
     const HomeScreen(),
-    const Text("AI Doctor"),
-    const Text("Book"),
-    const Text("News")
+    const AiDoctor(),
+    const BookAppointment(),
+    const HealthNews()
   ];
 
   void initTapIcon(int index) {

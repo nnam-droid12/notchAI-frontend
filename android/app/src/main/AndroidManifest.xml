@@ -3,6 +3,11 @@
         android:label="notchai_frontend"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCEs6BU-x-XCml0JPOYFqCfyS5vKkS43pE" />         
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
