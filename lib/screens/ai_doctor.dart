@@ -74,7 +74,7 @@ class _AiDoctorState extends State<AiDoctor> {
     return Scaffold(
       appBar: AppBar(
         title: BounceInDown(
-          child: const Text('Allen'),
+          child: const Text('Doctor Ali'),
         ),
         leading: const Icon(Icons.menu),
         centerTitle: true,
@@ -103,7 +103,7 @@ class _AiDoctorState extends State<AiDoctor> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: AssetImage(
-                          'assets/images/virtualAssistant.png',
+                          'assets/images/aidoc.jpg',
                         ),
                       ),
                     ),
@@ -135,7 +135,7 @@ class _AiDoctorState extends State<AiDoctor> {
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
                       generatedContent == null
-                          ? 'Good Morning, what task can I do for you?'
+                          ? 'Good Morning, Ask your health related query, I am here to help.?'
                           : generatedContent!,
                       style: TextStyle(
                         fontFamily: 'Cera Pro',
@@ -183,18 +183,18 @@ class _AiDoctorState extends State<AiDoctor> {
                     delay: Duration(milliseconds: start),
                     child: const FeatureBox(
                       color: Styles.firstSuggestionBoxColor,
-                      headerText: 'ChatGPT',
+                      headerText: 'AI Doctor',
                       descriptionText:
-                          'A smarter way to stay organized and informed with ChatGPT',
+                          'A smarter way to stay organized and informed with AI doctor',
                     ),
                   ),
                   SlideInLeft(
                     delay: Duration(milliseconds: start + delay),
                     child: const FeatureBox(
                       color: Styles.secondSuggestionBoxColor,
-                      headerText: 'Dall-E',
+                      headerText: 'AI Image',
                       descriptionText:
-                          'Get inspired and stay creative with your personal assistant powered by Dall-E',
+                          'Get inspired and stay healthy with your personal assistant powered by generative AI',
                     ),
                   ),
                   SlideInLeft(
@@ -203,7 +203,7 @@ class _AiDoctorState extends State<AiDoctor> {
                       color: Styles.thirdSuggestionBoxColor,
                       headerText: 'Smart Voice Assistant',
                       descriptionText:
-                          'Get the best of both worlds with a voice assistant powered by Dall-E and ChatGPT',
+                          'Get the best of both worlds with a voice assistant powered by AI Doctor',
                     ),
                   ),
                 ],

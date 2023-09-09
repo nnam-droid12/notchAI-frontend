@@ -19,9 +19,10 @@ class _HealthNewsState extends State<HealthNews> {
   }
 
   Future<void> fetchHealthNews() async {
-    const apiKey = '605b5261cd5b4734853884a71e80b2a2'; // Replace with your News API key
+    const apiKey =
+        '605b5261cd5b4734853884a71e80b2a2'; // Replace with your News API key
     const apiUrl =
-        'https://newsapi.org/v2/top-headlines?category=health&apiKey=$apiKey';
+        'https://newsapi.org/v2/top-headlines?category=health&language=en&apiKey=$apiKey';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -49,11 +50,36 @@ class _HealthNewsState extends State<HealthNews> {
         itemCount: newsData.length,
         itemBuilder: (context, index) {
           final article = newsData[index];
+          final String imageUrl =
+              article['urlToImage'] ?? ''; // Get the image URL
+
           return ListTile(
-            title: Text(article['title']),
-            subtitle: Text(article['description']),
+            contentPadding: EdgeInsets.all(8.0),
+            leading: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                border: Border.all(color: Colors.black, width: 2.0),
+              ),
+              child: ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(10.0), // Clip rounded corners
+                child: imageUrl.isNotEmpty
+                    ? Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(
+                        color: Colors.grey, // Placeholder color
+                      ),
+              ),
+            ),
+            title: Text(article['title'] ?? 'No title available'),
+            subtitle:
+                Text(article['description'] ?? 'No description available'),
             onTap: () {
-             
+              // Add your onTap logic here
             },
           );
         },
