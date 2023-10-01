@@ -1,4 +1,3 @@
-
 import 'package:notchai_frontend/screens/feature_item.dart';
 import 'package:notchai_frontend/screens/huggingfaceapi_service.dart';
 import 'package:notchai_frontend/utils/app_styles.dart';
@@ -24,6 +23,7 @@ class _AiDoctorState extends State<AiDoctor> {
   String? generatedImageUrl;
   int start = 200;
   int delay = 200;
+  TextEditingController questionController = TextEditingController();
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _AiDoctorState extends State<AiDoctor> {
     return Scaffold(
       appBar: AppBar(
         title: BounceInDown(
-          child: const Text('Doctor Ali'),
+          child: const Text('NOTCH AI'),
         ),
         leading: const Icon(Icons.menu),
         centerTitle: true,
@@ -82,7 +82,6 @@ class _AiDoctorState extends State<AiDoctor> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // virtual assistant picture
             ZoomIn(
               child: Stack(
                 children: [
@@ -111,7 +110,6 @@ class _AiDoctorState extends State<AiDoctor> {
                 ],
               ),
             ),
-            // chat bubble
             FadeInRight(
               child: Visibility(
                 visible: generatedImageUrl == null,
@@ -174,41 +172,69 @@ class _AiDoctorState extends State<AiDoctor> {
                 ),
               ),
             ),
-            // features list
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: TextField(
+                controller: questionController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Ask your question...',
+                ),
+              ),
+            ),
             Visibility(
               visible: generatedContent == null && generatedImageUrl == null,
-              child: Column(
-                children: [
-                  SlideInLeft(
-                    delay: Duration(milliseconds: start),
-                    child: const FeatureBox(
-                      color: Styles.firstSuggestionBoxColor,
-                      headerText: 'AI Doctor',
-                      descriptionText:
-                          'A smarter way to stay organized and informed with AI doctor',
-                    ),
-                  ),
-                  SlideInLeft(
-                    delay: Duration(milliseconds: start + delay),
-                    child: const FeatureBox(
-                      color: Styles.secondSuggestionBoxColor,
-                      headerText: 'AI Image',
-                      descriptionText:
-                          'Get inspired and stay healthy with your personal assistant powered by generative AI',
-                    ),
-                  ),
-                  SlideInLeft(
-                    delay: Duration(milliseconds: start + 2 * delay),
-                    child: const FeatureBox(
-                      color: Styles.thirdSuggestionBoxColor,
-                      headerText: 'Smart Voice Assistant',
-                      descriptionText:
-                          'Get the best of both worlds with a voice assistant powered by AI Doctor',
-                    ),
-                  ),
-                ],
+              child: TextButton(
+                onPressed: () async {
+                  final userQuestion = questionController.text;
+                  if (userQuestion.isNotEmpty) {
+                    final answer =
+                        await openAIService.isArtPromptAPI(userQuestion);
+                    setState(() {
+                      generatedContent = answer;
+                      generatedImageUrl = null;
+                    });
+                    await systemSpeak(answer);
+                  }
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Styles.firstSuggestionBoxColor,
+                ),
+                child: const Text('Submit'),
               ),
-            )
+            ),
+            Column(
+              children: [
+                SlideInLeft(
+                  delay: Duration(milliseconds: start),
+                  child: const FeatureBox(
+                    color: Styles.firstSuggestionBoxColor,
+                    headerText: 'AI Doctor',
+                    descriptionText:
+                        'A smarter way to stay organized and informed with AI doctor',
+                  ),
+                ),
+                SlideInLeft(
+                  delay: Duration(milliseconds: start + delay),
+                  child: const FeatureBox(
+                    color: Styles.secondSuggestionBoxColor,
+                    headerText: 'AI Image',
+                    descriptionText:
+                        'Get inspired and stay healthy with your personal assistant powered by generative AI',
+                  ),
+                ),
+                SlideInLeft(
+                  delay: Duration(milliseconds: start + 2 * delay),
+                  child: const FeatureBox(
+                    color: Styles.thirdSuggestionBoxColor,
+                    headerText: 'Smart Voice Assistant',
+                    descriptionText:
+                        'Get the best of both worlds with a voice assistant powered by AI Doctor',
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
