@@ -10,17 +10,17 @@ class HealthNews extends StatefulWidget {
 }
 
 class _HealthNewsState extends State<HealthNews> {
-  List<dynamic> newsData = []; // Store the fetched news data here
+  List<dynamic> newsData = []; 
 
   @override
   void initState() {
     super.initState();
-    fetchHealthNews(); // Fetch news data when the widget initializes
+    fetchHealthNews(); 
   }
 
   Future<void> fetchHealthNews() async {
     const apiKey =
-        '605b5261cd5b4734853884a71e80b2a2'; // Replace with your News API key
+        '605b5261cd5b4734853884a71e80b2a2'; 
     const apiUrl =
         'https://newsapi.org/v2/top-headlines?category=health&language=en&apiKey=$apiKey';
 
@@ -36,6 +36,7 @@ class _HealthNewsState extends State<HealthNews> {
         throw Exception('Failed to load health news');
       }
     } catch (error) {
+      // ignore: avoid_print
       print('Error: $error');
     }
   }
@@ -51,10 +52,10 @@ class _HealthNewsState extends State<HealthNews> {
         itemBuilder: (context, index) {
           final article = newsData[index];
           final String imageUrl =
-              article['urlToImage'] ?? ''; // Get the image URL
+              article['urlToImage'] ?? ''; 
 
           return ListTile(
-            contentPadding: EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8.0),
             leading: Container(
               width: 100,
               height: 100,

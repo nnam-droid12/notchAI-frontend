@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notchai_frontend/screens/bottom_navigation.dart';
-import 'package:notchai_frontend/screens/signin.dart';
+// import 'package:notchai_frontend/screens/signin.dart';
 import 'package:notchai_frontend/utils/app_styles.dart';
 
 void main() {

@@ -1,4 +1,6 @@
 const stableDiffusionModelAPIKey =
-    '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';
+    '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';
 
 //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
+
+// skin-diagnosis-api-key = b9cJgVLaZ_IpTvCgt4k5qzIpNWo8aU8IXY-ga5I8Wq0

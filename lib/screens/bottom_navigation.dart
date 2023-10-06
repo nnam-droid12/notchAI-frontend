@@ -3,6 +3,9 @@ import 'package:notchai_frontend/screens/ai_doctor.dart';
 import 'package:notchai_frontend/screens/appointment.dart';
 import 'package:notchai_frontend/screens/health_news.dart';
 import 'package:notchai_frontend/screens/home_screen.dart';
+import 'package:notchai_frontend/screens/scan_skin.dart';
+
+
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -16,6 +19,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _widgetScreen = <Widget>[
     const HomeScreen(),
     const AiDoctor(),
+    const ScanTech(),
     const BookAppointment(),
     const HealthNews()
   ];
@@ -31,32 +35,53 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return Scaffold(
       body: _widgetScreen[currentpageIndex],
       bottomNavigationBar: BottomNavigationBar(
-          elevation: 10,
-          onTap: initTapIcon,
-          currentIndex: currentpageIndex,
-          showUnselectedLabels: false,
-          showSelectedLabels: false,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.blueGrey,
-          unselectedItemColor: Colors.lightBlueAccent,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "home",
-                activeIcon: Icon(Icons.home)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.assistant),
-                label: "AI Doctor",
-                activeIcon: Icon(Icons.assistant)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.map_outlined),
-                label: "Book",
-                activeIcon: Icon(Icons.map_outlined)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.newspaper_rounded),
-                label: "News",
-                activeIcon: Icon(Icons.newspaper_rounded))
-          ]),
+        elevation: 8,
+        onTap: initTapIcon,
+        currentIndex: currentpageIndex,
+        showUnselectedLabels: false,
+        showSelectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blueGrey,
+        unselectedItemColor: Colors.grey, // Changed unselected color to grey
+        items: [
+          _buildNavBarItem(Icons.home, "Home", 0),
+          _buildNavBarItem(Icons.assistant, "AI Doctor", 1),
+          _buildNavBarItem(Icons.scanner_rounded, "Scan Skin", 2),
+          _buildNavBarItem(Icons.map_outlined, "Booking", 3),
+          _buildNavBarItem(Icons.newspaper_rounded, "News", 4),
+        ],
+      ),
+    );
+  }
+
+  BottomNavigationBarItem _buildNavBarItem(IconData icon, String label, int index) {
+    return BottomNavigationBarItem(
+      icon: Column(
+        children: [
+          Icon(icon),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12, 
+              color: Colors.grey, 
+            ),
+          ),
+        ],
+      ),
+      label: "", // Set label to empty string to hide default label
+      activeIcon: Column(
+        children: [
+          Icon(icon),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12, 
+              color: Colors.blueGrey, 
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
+
