@@ -113,6 +113,12 @@ class HomeScreen extends StatelessWidget {
                           builder: (context) => const BookAppointment(),
                         ));
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(
+                            0xFF097969), 
+                        foregroundColor:
+                            Colors.white, 
+                      ),
                       child: const Text("View All"),
                     ),
                   ],
@@ -146,12 +152,20 @@ class HomeScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Redirect to another page for AI recommendations
+                      
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const AiDoctor(),
                         ));
                       },
-                      child: const Text("View All"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(
+                            0xFF097969), 
+                        foregroundColor:
+                            Colors.white, 
+                      ),
+                      child: const Text(
+                        "View All",
+                      ),
                     ),
                   ],
                 ),

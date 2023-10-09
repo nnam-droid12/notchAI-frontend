@@ -78,6 +78,7 @@ class _AiDoctorState extends State<AiDoctor> {
         ),
         leading: const Icon(Icons.menu),
         centerTitle: true,
+        backgroundColor: const Color(0xFF097969),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -133,7 +134,7 @@ class _AiDoctorState extends State<AiDoctor> {
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
                       generatedContent == null
-                          ? 'Good Morning, Ask your health related query, I am here to help.?'
+                          ? 'Good Morning, Ask your health related question, I am here to help?'
                           : generatedContent!,
                       style: TextStyle(
                         fontFamily: 'Cera Pro',
@@ -199,7 +200,7 @@ class _AiDoctorState extends State<AiDoctor> {
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Styles.firstSuggestionBoxColor,
+                  backgroundColor: const Color(0xFF097969),
                 ),
                 child: const Text('Submit'),
               ),
@@ -209,19 +210,10 @@ class _AiDoctorState extends State<AiDoctor> {
                 SlideInLeft(
                   delay: Duration(milliseconds: start),
                   child: const FeatureBox(
-                    color: Styles.firstSuggestionBoxColor,
+                    color: Color(0xFF097969),
                     headerText: 'AI Doctor',
                     descriptionText:
                         'A smarter way to stay organized and informed with AI doctor',
-                  ),
-                ),
-                SlideInLeft(
-                  delay: Duration(milliseconds: start + delay),
-                  child: const FeatureBox(
-                    color: Styles.secondSuggestionBoxColor,
-                    headerText: 'AI Image',
-                    descriptionText:
-                        'Get inspired and stay healthy with your personal assistant powered by generative AI',
                   ),
                 ),
                 SlideInLeft(
@@ -241,7 +233,7 @@ class _AiDoctorState extends State<AiDoctor> {
       floatingActionButton: ZoomIn(
         delay: Duration(milliseconds: start + 3 * delay),
         child: FloatingActionButton(
-          backgroundColor: Styles.firstSuggestionBoxColor,
+          backgroundColor: const Color(0xFF097969),
           onPressed: () async {
             if (await speechToText.hasPermission &&
                 speechToText.isNotListening) {

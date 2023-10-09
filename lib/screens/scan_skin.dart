@@ -61,6 +61,7 @@ class _ScanTechState extends State<ScanTech> {
         throw Exception('Failed to load data from OpenAI API');
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error: $e');
       return [];
     }
@@ -103,9 +104,11 @@ class _ScanTechState extends State<ScanTech> {
 
           setState(() {});
         } else {
+          // ignore: avoid_print
           print('Error: ${response.reasonPhrase}');
         }
       } catch (e) {
+        // ignore: avoid_print
         print('Error: $e');
       }
     }
@@ -116,7 +119,7 @@ class _ScanTechState extends State<ScanTech> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Skin Scan'),
-        backgroundColor: Colors.grey,
+        backgroundColor: const Color(0xFF097969),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -127,7 +130,7 @@ class _ScanTechState extends State<ScanTech> {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
-                color: Colors.grey,
+                color: const Color(0xFF097969),
                 child: const Text(
                   'Send me a good picture that describes your skin concern',
                   style: TextStyle(color: Colors.white),
@@ -138,7 +141,7 @@ class _ScanTechState extends State<ScanTech> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: const Color(0xFF097969),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -149,8 +152,8 @@ class _ScanTechState extends State<ScanTech> {
                     ElevatedButton(
                       onPressed: _selectImage,
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey,
-                        onPrimary: Colors.white,
+                        backgroundColor: const Color(0xFF097969),
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -160,8 +163,8 @@ class _ScanTechState extends State<ScanTech> {
                     ElevatedButton(
                       onPressed: _analyzeImage,
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey,
-                        onPrimary: Colors.white,
+                        backgroundColor: const Color(0xFF097969),
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -176,7 +179,7 @@ class _ScanTechState extends State<ScanTech> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: const Color(0xFF097969),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -195,7 +198,7 @@ class _ScanTechState extends State<ScanTech> {
                             margin: const EdgeInsets.symmetric(vertical: 5),
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.grey,
+                              color: const Color(0xFF097969),
                               border: Border.all(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -223,8 +226,8 @@ class _ScanTechState extends State<ScanTech> {
                                           });
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          primary: Colors.white,
-                                          onPrimary: Colors.black,
+                                          backgroundColor: Colors.white,
+                                          foregroundColor: Colors.black,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10),
@@ -242,7 +245,7 @@ class _ScanTechState extends State<ScanTech> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                        return const CircularProgressIndicator();
                                       } else if (snapshot.hasError) {
                                         return Text('Error: ${snapshot.error}');
                                       } else {
@@ -262,9 +265,9 @@ class _ScanTechState extends State<ScanTech> {
                                                 null)
                                               for (var item
                                                   in causesAndRecommendations)
-                                                Text(
-                                                  '- $item',
-                                                ),
+                                                Text('- $item',
+                                                    style: const TextStyle(
+                                                        color: Colors.white)),
                                           ],
                                         );
                                       }
