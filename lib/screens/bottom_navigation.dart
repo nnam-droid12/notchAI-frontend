@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notchai_frontend/screens/ai_doctor.dart';
-import 'package:notchai_frontend/screens/appointment.dart';
+import 'package:notchai_frontend/pages/doctor_home.dart';
 import 'package:notchai_frontend/screens/health_news.dart';
 import 'package:notchai_frontend/screens/home_screen.dart';
 import 'package:notchai_frontend/screens/scan_skin.dart';
@@ -20,7 +20,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     const HomeScreen(),
     const AiDoctor(),
     const ScanTech(),
-    const BookAppointment(),
+    DoctorHomePage(),
     const HealthNews()
   ];
 
