@@ -22,6 +22,7 @@ class _SignupState extends State<Signup> {
       'email': user.email,
       'password': user.password
     });
+    // ignore: avoid_print
     print(res.body);
     Navigator.push(
         context, new MaterialPageRoute(builder: (context) => Signin()));
@@ -149,6 +150,7 @@ class _SignupState extends State<Signup> {
                               _formKey.currentState!.validate()) {
                             save();
                           } else {
+                            // ignore: avoid_print
                             print("not ok");
                           }
                         },
@@ -171,8 +173,8 @@ class _SignupState extends State<Signup> {
                           onTap: () {
                             Navigator.push(
                                 context,
-                                new MaterialPageRoute(
-                                    builder: (context) => Signin()));
+                                MaterialPageRoute(
+                                    builder: (context) => const Signin()));
                           },
                           child: const Text(
                             "Signin",

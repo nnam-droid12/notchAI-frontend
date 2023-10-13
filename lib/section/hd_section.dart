@@ -27,7 +27,7 @@ class HDCell extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            Positioned(
+            const Positioned(
               top: 16,
               right: 16,
               child: SizedBox(
@@ -44,7 +44,7 @@ class HDCell extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Dr.',
                     style: TextStyle(
                       color: Colors.white,
@@ -54,7 +54,7 @@ class HDCell extends StatelessWidget {
                   ),
                   Text(
                     doctor.firstName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
@@ -62,18 +62,18 @@ class HDCell extends StatelessWidget {
                   ),
                   Text(
                     doctor.lastName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Text(
                     doctor.type + ' Specialist',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
@@ -90,9 +90,9 @@ class HDCell extends StatelessWidget {
                 height: 54,
                 decoration: BoxDecoration(
                   color: HexColor('#00A994'),
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(32)),
+                  borderRadius: const BorderRadius.only(topRight: Radius.circular(32)),
                 ),
-                child: Icon(
+                child: const Icon(
                   CustomIcons.arrow_right,
                   color: Colors.white,
                   size: 18,

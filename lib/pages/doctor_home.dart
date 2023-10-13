@@ -46,21 +46,21 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     return Scaffold(
       appBar: _buildAppBar(),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _hDoctorsSection(),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _categorySection(),
-                  SizedBox(
+                  const SizedBox(
                     height: 32,
                   ),
                   _trDoctorsSection(),
@@ -81,7 +81,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
       elevation: 0,
       iconTheme: IconThemeData(color: HexColor('#150047')),
       leading: IconButton(
-        icon: Icon(
+        icon: const Icon(
           CustomIcons.menu,
           size: 14,
         ),
@@ -89,7 +89,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
       ),
       actions: [
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             CustomIcons.search,
             size: 20,
           ),
@@ -99,7 +99,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     );
   }
 
-  /// Highlighted Doctors Section
+
   SizedBox _hDoctorsSection() {
     return SizedBox(
       height: 199,
@@ -107,10 +107,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         primary: false,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         itemCount: _hDoctors.length,
         separatorBuilder: (BuildContext context, int index) =>
-            Divider(indent: 16),
+            const Divider(indent: 16),
         itemBuilder: (BuildContext context, int index) => HDCell(
           doctor: _hDoctors[index],
           onTap: () => _onCellTap(_hDoctors[index]),
@@ -119,12 +119,12 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     );
   }
 
-  /// Category Section
+  
   Column _categorySection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Categories',
           style: TextStyle(
             color: Colors.black,
@@ -132,7 +132,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
             fontWeight: FontWeight.w400,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 32,
         ),
         SizedBox(
@@ -143,7 +143,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
             scrollDirection: Axis.horizontal,
             itemCount: _categories.length,
             separatorBuilder: (BuildContext context, int index) =>
-                Divider(indent: 16),
+               const Divider(indent: 16),
             itemBuilder: (BuildContext context, int index) =>
                 CategoryCell(category: _categories[index]),
           ),
@@ -157,7 +157,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Top Rated Doctor',
           style: TextStyle(
             color: Colors.black,
@@ -165,14 +165,14 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
             fontWeight: FontWeight.w400,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 32,
         ),
         ListView.separated(
           primary: false,
           shrinkWrap: true,
           itemCount: _trDoctors.length,
-          separatorBuilder: (BuildContext context, int index) => Divider(
+          separatorBuilder: (BuildContext context, int index) => const Divider(
             thickness: 16,
             color: Colors.transparent,
           ),
@@ -187,7 +187,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   /// DUMMY DATA
   /// **********************************************
 
-  /// Get Highlighted Doctors List
   List<Doctor> _getHDoctors() {
     List<Doctor> hDoctors = [];
 
@@ -195,14 +194,14 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
       firstName: 'Albert',
       lastName: 'Alexander',
       image: 'albert.png',
-      type: 'Kidney',
+      type: 'Skin',
       rating: 4.5,
     ));
     hDoctors.add(Doctor(
       firstName: 'Elisa',
       lastName: 'Rose',
       image: 'albert.png',
-      type: 'Kidney',
+      type: 'Heart',
       rating: 4.5,
     ));
 
@@ -214,11 +213,11 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     List<Category> categories = [];
     categories.add(Category(
       icon: CustomIcons.cardiologist,
-      title: 'Cardiologist',
+      title: 'Dermatologist',
     ));
     categories.add(Category(
       icon: CustomIcons.eyes,
-      title: 'Eyes',
+      title: 'Cardiologist',
     ));
     categories.add(Category(
       icon: CustomIcons.pediatrician,
@@ -242,19 +241,19 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         firstName: 'Cherly',
         lastName: 'Bishop',
         image: 'cherly.png',
-        type: 'Kidney',
+        type: 'Eye',
         rating: 4.7));
     trDoctors.add(Doctor(
         firstName: 'Albert',
         lastName: 'Alexander',
         image: 'albert.png',
-        type: 'Kidney',
+        type: 'Skin',
         rating: 4.3));
     trDoctors.add(Doctor(
       firstName: 'Elisa',
       lastName: 'Rose',
       image: 'albert.png',
-      type: 'Kidney',
+      type: 'Heart',
       rating: 4.5,
     ));
     return trDoctors;

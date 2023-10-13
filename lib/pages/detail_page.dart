@@ -14,23 +14,22 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.only(bottom: 32),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _titleSection(),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -39,13 +38,13 @@ class _DetailPageState extends State<DetailPage> {
                         widget.doctor.firstName +
                         ' ' +
                         widget.doctor.lastName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Row(
@@ -55,7 +54,7 @@ class _DetailPageState extends State<DetailPage> {
                         size: 14,
                         color: HexColor('#C6C6CD'),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Text(
@@ -68,11 +67,12 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     decoration: BoxDecoration(
                       color: HexColor('#FFF9EA'),
                       border: Border.all(color: HexColor('#FFEDBE'), width: 1),
@@ -87,7 +87,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 32,
                   ),
                   Text(
@@ -98,10 +98,10 @@ class _DetailPageState extends State<DetailPage> {
                       fontWeight: FontWeight.w300,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 32,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 91,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,7 +112,7 @@ class _DetailPageState extends State<DetailPage> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 32,
                   ),
                   Text(
@@ -132,18 +132,14 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  /// **********************************************
-  /// WIDGETS
-  /// **********************************************
-
   /// App Bar
   AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: HexColor('#00C6AD'),
       elevation: 0,
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
       leading: IconButton(
-        icon: Icon(CustomIcons.arrow_left, size: 20),
+        icon: const Icon(CustomIcons.arrow_left, size: 20),
         onPressed: () => Navigator.pop(context),
       ),
     );
@@ -156,7 +152,7 @@ class _DetailPageState extends State<DetailPage> {
       color: HexColor('#00C6AD'),
       child: Stack(
         children: [
-          Align(
+          const Align(
             alignment: Alignment.center,
             child: SizedBox(
               width: 207,
@@ -199,7 +195,7 @@ class _DetailPageState extends State<DetailPage> {
             right: 32,
             bottom: 0,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: HexColor('#FFBB23'),
                 borderRadius: BorderRadius.circular(12),
@@ -208,16 +204,16 @@ class _DetailPageState extends State<DetailPage> {
                 children: [
                   Text(
                     widget.doctor.rating.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 4,
                   ),
-                  Icon(
+                  const Icon(
                     CustomIcons.star,
                     color: Colors.white,
                     size: 14,

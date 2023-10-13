@@ -32,7 +32,7 @@ class DetailCell extends StatelessWidget {
               height: 31,
               decoration: BoxDecoration(
                 color: HexColor('#E1F7F4'),
-                borderRadius: BorderRadius.only(topRight: Radius.circular(16)),
+                borderRadius: const BorderRadius.only(topRight: Radius.circular(16)),
               ),
             ),
           ),
@@ -49,7 +49,7 @@ class DetailCell extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 4,
                 ),
                 Text(

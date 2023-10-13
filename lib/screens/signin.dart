@@ -25,6 +25,7 @@ class _SigninState extends State<Signin> {
           'email': user.email,
           'password': user.password
         });
+    // ignore: avoid_print
     print(res.body);
     Navigator.push(
         context, new MaterialPageRoute(builder: (context) => BottomNavBar()));
@@ -152,6 +153,7 @@ class _SigninState extends State<Signin> {
                         if (_formKey.currentState != null && _formKey.currentState!.validate()) {
                           save();
                         } else {
+                          // ignore: avoid_print
                           print("not ok");
                         }
                       },
@@ -177,7 +179,7 @@ class _SigninState extends State<Signin> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Signup()));
+                                    builder: (context) => const Signup()));
                           },
                           child: const Text(
                             "Signup",

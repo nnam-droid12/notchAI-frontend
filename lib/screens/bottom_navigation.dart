@@ -20,7 +20,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     const HomeScreen(),
     const AiDoctor(),
     const ScanTech(),
-    DoctorHomePage(),
+    const DoctorHomePage(),
     const HealthNews()
   ];
 

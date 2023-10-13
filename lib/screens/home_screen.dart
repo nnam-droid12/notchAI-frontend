@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:notchai_frontend/screens/ai_doctor.dart';
-import 'package:notchai_frontend/screens/appointment.dart';
+import 'package:notchai_frontend/pages/doctor_home.dart';
 import 'package:notchai_frontend/utils/app_styles.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -77,6 +77,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
+                        // ignore: avoid_print
                         print("you tap view all");
                       },
                       child: Text(
@@ -110,7 +111,7 @@ class HomeScreen extends StatelessWidget {
                       onPressed: () {
                         // Redirect to another page for appointment categories
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const BookAppointment(),
+                          builder: (context) => const DoctorHomePage(),
                         ));
                       },
                       style: ElevatedButton.styleFrom(

@@ -15,7 +15,7 @@ class CategoryCell extends StatelessWidget {
       width: 100,
       height: 100,
       clipBehavior: Clip.hardEdge,
-      padding: EdgeInsets.only(top: 14),
+      padding: const EdgeInsets.only(top: 14),
       decoration: BoxDecoration(
         color: HexColor('#EDFDFA'),
         borderRadius: BorderRadius.circular(16),
@@ -25,7 +25,7 @@ class CategoryCell extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.only(left: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -34,7 +34,7 @@ class CategoryCell extends StatelessWidget {
                   size: 24,
                   color: HexColor('#00C6AD'),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Text(
@@ -56,7 +56,7 @@ class CategoryCell extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: HexColor('#E1F7F4'),
                     borderRadius:
-                        BorderRadius.only(topRight: Radius.circular(10))),
+                        const BorderRadius.only(topRight: Radius.circular(10))),
               ),
               Positioned(
                 left: 16,

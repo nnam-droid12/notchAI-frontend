@@ -26,46 +26,59 @@ class _ScanTechState extends State<ScanTech> {
     }
   }
 
-  Future<List<String>> _getCausesAndRecommendations(
-      String predictionName) async {
-    try {
-      final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/chat/completions'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $stableDiffusionModelAPIKey',
-        },
-        body: jsonEncode({
-          'model': 'gpt-3.5-turbo',
-          'messages': [
-            {
-              'role': 'system',
-              'content':
-                  'You are a helpful assistant that provides causes and recommendations for skin conditions.'
-            },
-            {
-              'role': 'user',
-              'content':
-                  'What are the causes and recommendations for $predictionName?'
-            },
-          ],
-        }),
-      );
+  Future<List<String>> _getCausesAndRecommendations(String predictionName) async {
+  try {
+    final response = await http.post(
+      Uri.parse('https://api.openai.com/v1/chat/completions'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $stableDiffusionModelAPIKey',
+      },
+      body: jsonEncode({
+        'model': 'gpt-3.5-turbo',
+        'messages': [
+          {
+            'role': 'system',
+            'content':
+                'You are a helpful assistant that provides causes and recommendations for skin conditions.'
+          },
+          {
+            'role': 'user',
+            'content':
+                'What are the causes and recommendations for $predictionName?'
+          },
+        ],
+      }),
+    );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final completions =
-            data['choices'][0]['message']['content'].split('\n');
-        return completions;
-      } else {
-        throw Exception('Failed to load data from OpenAI API');
-      }
-    } catch (e) {
-      // ignore: avoid_print
-      print('Error: $e');
-      return [];
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final completions =
+          data['choices'][0]['message']['content'].split('\n');
+
+      // Extract causes and recommendations
+      final causes = completions
+          .where((element) => element.startsWith('Cause:'))
+          .take(2)
+          .map((cause) => cause.substring(6)) 
+          .toList();
+
+      final recommendations = completions
+          .where((element) => element.startsWith('Recommendation:'))
+          .take(3)
+          .map((recommendation) => recommendation.substring(15)) 
+          .toList();
+
+      final summary = [...causes, ...recommendations].map((item) => item.toString()).toList();
+      return summary;
+    } else {
+      throw Exception('Failed to load data from OpenAI API');
     }
+  } catch (e) {
+    print('Error: $e');
+    return [];
   }
+}
 
   Future<void> _analyzeImage() async {
     if (selectedImage != null) {

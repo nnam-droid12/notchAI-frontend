@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:notchai_frontend/screens/api_secrets.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,6 +24,7 @@ class OpenAIService {
           ],
         }),
       );
+      // ignore: avoid_print
       print(res.body);
       if (res.statusCode == 200) {
         String content =
@@ -50,6 +50,10 @@ class OpenAIService {
   }
 
   Future<String> chatGPTAPI(String prompt) async {
+    if (!isHealthRelatedPrompt(prompt)) {
+      return 'Please ask health-related questions as I am your health companion.';
+    }
+
     messages.add({
       'role': 'user',
       'content': prompt,
@@ -116,5 +120,16 @@ class OpenAIService {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  bool isHealthRelatedPrompt(String prompt) {
+    List<String> healthKeywords = ['health', 'drug', 'medicine', 'hygiene']; 
+
+    for (var keyword in healthKeywords) {
+      if (prompt.toLowerCase().contains(keyword)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
