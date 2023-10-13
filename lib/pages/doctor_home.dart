@@ -10,18 +10,16 @@ import 'package:notchai_frontend/utils/he_color.dart';
 import 'package:flutter/material.dart';
 
 class DoctorHomePage extends StatefulWidget {
-
-  const DoctorHomePage ({Key? key}) : super(key: key);
+  const DoctorHomePage({Key? key}) : super(key: key);
 
   @override
   _DoctorHomePageState createState() => _DoctorHomePageState();
 }
 
 class _DoctorHomePageState extends State<DoctorHomePage> {
- List<Doctor> _hDoctors = [];
+  List<Doctor> _hDoctors = [];
   List<Category> _categories = [];
   List<Doctor> _trDoctors = [];
-
 
   _onCellTap(Doctor doctor) {
     Navigator.push(
@@ -30,8 +28,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
           builder: (context) => DetailPage(doctor: doctor),
         ));
   }
-
- 
 
   @override
   void initState() {
@@ -73,8 +69,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     );
   }
 
-
-
   AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
@@ -95,10 +89,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
           ),
           onPressed: () {},
         ),
-      ], systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ],
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
     );
   }
-
 
   SizedBox _hDoctorsSection() {
     return SizedBox(
@@ -119,7 +113,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     );
   }
 
-  
   Column _categorySection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +136,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
             scrollDirection: Axis.horizontal,
             itemCount: _categories.length,
             separatorBuilder: (BuildContext context, int index) =>
-               const Divider(indent: 16),
+                const Divider(indent: 16),
             itemBuilder: (BuildContext context, int index) =>
                 CategoryCell(category: _categories[index]),
           ),
@@ -200,7 +193,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     hDoctors.add(Doctor(
       firstName: 'Elisa',
       lastName: 'Rose',
-      image: 'albert.png',
+      image: 'dr-elisa.jpg',
       type: 'Heart',
       rating: 4.5,
     ));
@@ -252,7 +245,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     trDoctors.add(Doctor(
       firstName: 'Elisa',
       lastName: 'Rose',
-      image: 'albert.png',
+      image: 'dr-elisa.jpg',
       type: 'Heart',
       rating: 4.5,
     ));

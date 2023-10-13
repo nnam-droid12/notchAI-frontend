@@ -1,5 +1,5 @@
-const stableDiffusionModelAPIKey =
-    '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';
+const stableDiffusionModelAPIKey = '';
+    // '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';
 
 //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
 

@@ -14,6 +14,14 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  bool isAppointmentBooked = false;
+
+  void bookAppointment() {
+    setState(() {
+      isAppointmentBooked = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,6 +131,97 @@ class _DetailPageState extends State<DetailPage> {
                       fontWeight: FontWeight.w300,
                     ),
                   ),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16), // Added extra space
+            Align(
+              alignment: Alignment.centerRight,
+              child: Column(
+                children: [
+                  isAppointmentBooked
+                      ? const Text(
+                          'You successfully booked!',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(widget.doctor.firstName +
+                                      ' ' +
+                                      widget.doctor.lastName),
+                                  content: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text(
+                                          'Location: Melbourn, Australia'),
+                                      const Text('Availability: Add time here'),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('Close'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              bookAppointment();
+                                              Navigator.of(context).pop();
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.green,
+                                              onPrimary: Colors.white,
+                                            ),
+                                            child: const Text('Book'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                            onPrimary: Colors.white,
+                          ),
+                          child: const Text('Book Appointment'),
+                        ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: HexColor('#FFF9EA'),
+                      border: Border.all(color: HexColor('#FFEDBE'), width: 1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      widget.doctor.type + ' Specialist',
+                      style: TextStyle(
+                        color: HexColor('#FFBF11'),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -132,7 +231,6 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  /// App Bar
   AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: HexColor('#00C6AD'),
@@ -145,7 +243,6 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  /// Title Section
   Container _titleSection() {
     return Container(
       height: 250,
@@ -189,37 +286,6 @@ class _DetailPageState extends State<DetailPage> {
             child: Container(
               height: 15,
               color: Colors.white,
-            ),
-          ),
-          Positioned(
-            right: 32,
-            bottom: 0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: HexColor('#FFBB23'),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    widget.doctor.rating.toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  const Icon(
-                    CustomIcons.star,
-                    color: Colors.white,
-                    size: 14,
-                  ),
-                ],
-              ),
             ),
           ),
         ],
