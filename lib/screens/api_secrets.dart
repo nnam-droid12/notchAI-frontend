@@ -1,5 +1,4 @@
 const stableDiffusionModelAPIKey = '';
-    // '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';
 
 //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
 

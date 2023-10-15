@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:notchai_frontend/screens/api_secrets.dart';
+import 'package:notchai_frontend/screens/community_home_screen.dart';
 import 'dart:io';
 
 class ScanTech extends StatefulWidget {
@@ -61,7 +62,6 @@ class _ScanTechState extends State<ScanTech> {
         throw Exception('Failed to load data from OpenAI API');
       }
     } catch (e) {
-      // ignore: avoid_print
       print('Error: $e');
       return [];
     }
@@ -104,11 +104,9 @@ class _ScanTechState extends State<ScanTech> {
 
           setState(() {});
         } else {
-          // ignore: avoid_print
           print('Error: ${response.reasonPhrase}');
         }
       } catch (e) {
-        // ignore: avoid_print
         print('Error: $e');
       }
     }
@@ -121,169 +119,203 @@ class _ScanTechState extends State<ScanTech> {
         title: const Text('Scan Skin'),
         backgroundColor: const Color(0xFF097969),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                color: const Color(0xFF097969),
-                child: const Text(
-                  'Send me a good picture that describes your skin concern',
-                  style: TextStyle(color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF097969),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: [
-                    selectedImage != null
-                        ? Image.file(selectedImage!, height: 200, width: 200)
-                        : const Text('No Image Selected'),
-                    ElevatedButton(
-                      onPressed: _selectImage,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF097969),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text('Select Image'),
-                    ),
-                    ElevatedButton(
-                      onPressed: _analyzeImage,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF097969),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text('Analyze Image'),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              if (predictionList.isNotEmpty)
+      body: ListView.builder(
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Column(
+              children: <Widget>[
+                const SizedBox(height: 20),
                 Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.all(10),
+                  color: const Color(0xFF097969),
+                  child: const Text(
+                    'Send me a good picture that describes your skin concern',
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: const Color(0xFF097969),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
                     children: [
-                      const Text(
-                        'Here are your top 2 answers ranked in order',
-                        style: TextStyle(color: Colors.white),
+                      selectedImage != null
+                          ? Image.file(selectedImage!, height: 200, width: 200)
+                          : const Text('No Image Selected'),
+                      ElevatedButton(
+                        onPressed: _selectImage,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF097969),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text('Select Image'),
                       ),
-                      const SizedBox(height: 10),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: predictionList.length,
-                        itemBuilder: (context, index) {
-                          var prediction = predictionList[index];
-                          return Container(
-                            margin: const EdgeInsets.symmetric(vertical: 5),
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF097969),
-                              border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        prediction.name,
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    if (!prediction
-                                        .showCausesAndRecommendations)
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            prediction
-                                                    .showCausesAndRecommendations =
-                                                true;
-                                          });
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          foregroundColor: Colors.black,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                        child: const Text(
-                                            'See Causes and Recommendations'),
-                                      ),
-                                  ],
-                                ),
-                                if (prediction.showCausesAndRecommendations)
-                                  FutureBuilder<List<String>>(
-                                    future: _getCausesAndRecommendations(
-                                        prediction.name),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const CircularProgressIndicator();
-                                      } else if (snapshot.hasError) {
-                                        return Text('Error: ${snapshot.error}');
-                                      } else {
-                                        var causesAndRecommendations =
-                                            snapshot.data;
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(height: 10),
-                                            const Text(
-                                              'Causes and Recommendations:',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            if (causesAndRecommendations !=
-                                                null)
-                                              for (var item
-                                                  in causesAndRecommendations)
-                                                Text('- $item',
-                                                    style: const TextStyle(
-                                                        color: Colors.white)),
-                                          ],
-                                        );
-                                      }
-                                    },
-                                  ),
-                              ],
-                            ),
-                          );
-                        },
+                      ElevatedButton(
+                        onPressed: _analyzeImage,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF097969),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text('Analyze Image'),
                       ),
                     ],
                   ),
                 ),
-            ],
-          ),
-        ),
+                const SizedBox(height: 20),
+                if (predictionList.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF097969),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Here are your top 2 answers ranked in order',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        const SizedBox(height: 10),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: predictionList.length,
+                          itemBuilder: (context, index) {
+                            var prediction = predictionList[index];
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF097969),
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          prediction.name,
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      if (!prediction
+                                          .showCausesAndRecommendations)
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              prediction
+                                                      .showCausesAndRecommendations =
+                                                  true;
+                                            });
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.white,
+                                            foregroundColor: Colors.black,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                              'See Causes and Recommendations'),
+                                        ),
+                                    ],
+                                  ),
+                                  if (prediction.showCausesAndRecommendations)
+                                    FutureBuilder<List<String>>(
+                                      future: _getCausesAndRecommendations(
+                                          prediction.name),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const CircularProgressIndicator();
+                                        } else if (snapshot.hasError) {
+                                          return Text(
+                                              'Error: ${snapshot.error}');
+                                        } else {
+                                          var causesAndRecommendations =
+                                              snapshot.data;
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(height: 10),
+                                              const Text(
+                                                'Causes and Recommendations:',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              if (causesAndRecommendations !=
+                                                  null)
+                                                for (var item
+                                                    in causesAndRecommendations)
+                                                  Text('- $item',
+                                                      style: const TextStyle(
+                                                          color: Colors.white)),
+                                            ],
+                                          );
+                                        }
+                                      },
+                                    ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            );
+          } else if (index == 1) {
+            return Column(
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF097969),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Add your logic for joining the community
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const CommunityHomeScreen(),
+                      ));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF097969),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text('Join Community'),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }

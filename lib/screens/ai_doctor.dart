@@ -222,7 +222,7 @@ class _AiDoctorState extends State<AiDoctor> {
                     color: Styles.thirdSuggestionBoxColor,
                     headerText: 'Smart Voice Assistant',
                     descriptionText:
-                        'Get the best of both worlds with a voice assistant powered by AI Doctor',
+                        'Get the best of both words\ with a voice assistant powered by AI Doctor',
                   ),
                 ),
               ],
