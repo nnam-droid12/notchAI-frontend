@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:notchai_frontend/screens/chat_screen.dart';
+import 'package:notchai_frontend/screens/community_chat_screen.dart';
 
 class CommunityHomeScreen extends StatelessWidget {
   const CommunityHomeScreen({Key? key}) : super(key: key);

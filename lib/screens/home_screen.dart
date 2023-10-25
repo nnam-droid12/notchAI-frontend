@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:notchai_frontend/screens/ai_doctor.dart';
+import 'package:notchai_frontend/screens/ai_chat_screen.dart';
 import 'package:notchai_frontend/pages/doctor_home.dart';
 import 'package:notchai_frontend/utils/app_styles.dart';
 
@@ -115,10 +115,8 @@ class HomeScreen extends StatelessWidget {
                         ));
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(
-                            0xFF097969), 
-                        foregroundColor:
-                            Colors.white, 
+                        backgroundColor: const Color(0xFF097969),
+                        foregroundColor: Colors.white,
                       ),
                       child: const Text("View All"),
                     ),
@@ -153,16 +151,13 @@ class HomeScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                      
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const AiDoctor(),
+                          builder: (context) => const AiChatScreen(),
                         ));
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(
-                            0xFF097969), 
-                        foregroundColor:
-                            Colors.white, 
+                        backgroundColor: const Color(0xFF097969),
+                        foregroundColor: Colors.white,
                       ),
                       child: const Text(
                         "View All",

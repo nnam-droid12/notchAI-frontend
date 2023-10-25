@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HealthNews extends StatefulWidget {
   const HealthNews({Key? key}) : super(key: key);
@@ -10,19 +11,18 @@ class HealthNews extends StatefulWidget {
 }
 
 class _HealthNewsState extends State<HealthNews> {
-  List<dynamic> newsData = []; 
+  List<dynamic> newsData = [];
+  static final healthApikey = dotenv.env["HealthNews_API_KEY"];
 
   @override
   void initState() {
     super.initState();
-    fetchHealthNews(); 
+    fetchHealthNews();
   }
 
   Future<void> fetchHealthNews() async {
-    const apiKey =
-        '605b5261cd5b4734853884a71e80b2a2'; 
-    const apiUrl =
-        'https://newsapi.org/v2/top-headlines?category=health&language=en&apiKey=$apiKey';
+    var apiUrl =
+        'https://newsapi.org/v2/top-headlines?category=health&language=en&apiKey=$healthApikey';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -52,8 +52,7 @@ class _HealthNewsState extends State<HealthNews> {
         itemCount: newsData.length,
         itemBuilder: (context, index) {
           final article = newsData[index];
-          final String imageUrl =
-              article['urlToImage'] ?? ''; 
+          final String imageUrl = article['urlToImage'] ?? '';
 
           return ListTile(
             contentPadding: const EdgeInsets.all(8.0),

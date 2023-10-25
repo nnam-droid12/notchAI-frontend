@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:notchai_frontend/screens/ai_doctor.dart';
+import 'package:notchai_frontend/screens/ai_chat_screen.dart';
 import 'package:notchai_frontend/pages/doctor_home.dart';
 // import 'package:notchai_frontend/screens/game.dart';
 import 'package:notchai_frontend/screens/health_news.dart';
 import 'package:notchai_frontend/screens/home_screen.dart';
 import 'package:notchai_frontend/screens/scan_skin.dart';
-
-
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -19,8 +17,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int currentpageIndex = 0;
   final List<Widget> _widgetScreen = <Widget>[
     const HomeScreen(),
-    const AiDoctor(),
     const ScanTech(),
+    const AiChatScreen(),
     const DoctorHomePage(),
     const HealthNews()
   ];
@@ -46,8 +44,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
         unselectedItemColor: Colors.grey, // Changed unselected color to grey
         items: [
           _buildNavBarItem(Icons.home, "Home", 0),
-          _buildNavBarItem(Icons.assistant, "AI Doctor", 1),
-          _buildNavBarItem(Icons.scanner_rounded, "Scan Skin", 2),
+          _buildNavBarItem(Icons.scanner_rounded, "Scan Skin", 1),
+          _buildNavBarItem(Icons.assistant, "AI Doctor", 2),
           _buildNavBarItem(Icons.map_outlined, "Booking", 3),
           _buildNavBarItem(Icons.newspaper_rounded, "News", 4),
         ],
@@ -55,7 +53,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 
-  BottomNavigationBarItem _buildNavBarItem(IconData icon, String label, int index) {
+  BottomNavigationBarItem _buildNavBarItem(
+      IconData icon, String label, int index) {
     return BottomNavigationBarItem(
       icon: Column(
         children: [
@@ -63,8 +62,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           Text(
             label,
             style: const TextStyle(
-              fontSize: 12, 
-              color: Colors.grey, 
+              fontSize: 12,
+              color: Colors.grey,
             ),
           ),
         ],
@@ -76,8 +75,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           Text(
             label,
             style: const TextStyle(
-              fontSize: 12, 
-              color: Colors.blueGrey, 
+              fontSize: 12,
+              color: Colors.blueGrey,
             ),
           ),
         ],
@@ -85,4 +84,3 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 }
-
