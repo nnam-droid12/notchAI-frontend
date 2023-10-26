@@ -1,4 +1,4 @@
-# NOTCH AI: Empowering Wellness AI
+# NOTCH AI: Changing the world, one step at a time.
 
 <img alt="image" src="./assets/images/gene1.jpg">
 
