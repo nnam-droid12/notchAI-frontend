@@ -6,6 +6,7 @@ import 'package:notchai_frontend/screens/signin.dart';
 import 'package:notchai_frontend/screens/user.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -31,11 +32,38 @@ class _SignupState extends State<Signup> {
       }),
     );
 
+    if (res.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', user.email);
+      prefs.setString('password', user.password);
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Signin()));
+    }
+    // ignore: avoid_print
     print(res.body);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Signin()));
   }
 
   User user = User('', '', '');
+
+  @override
+  void initState() {
+    super.initState();
+    loadSavedData();
+  }
+
+  void loadSavedData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString('email');
+    String? password = prefs.getString('password');
+
+    if (email != null && password != null) {
+      setState(() {
+        user.email = email;
+        user.password = password;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +77,7 @@ class _SignupState extends State<Signup> {
             child: SvgPicture.asset(
               'assets/images/top.svg',
               width: 400,
-              height: 150,
+              height: 200,
             ),
           ),
           SingleChildScrollView(
