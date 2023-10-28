@@ -49,10 +49,9 @@ class _AiChatScreenState extends State<AiChatScreen> {
       appBar: AppBar(
         elevation: 2,
         leading: Image.asset(
-          AssetsManager.notchaiLogo,
+          AssetsManager.notchAiLogo,
           fit: BoxFit.contain,
         ),
-        backgroundColor: const Color(0xFF097969),
         title: const Text("NotchAI"),
         actions: [
           IconButton(
@@ -77,8 +76,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                         return ChatWidget(
                           msg: chatProvider.getChatList[index].msg,
                           chatIndex: chatProvider.getChatList[index].chatIndex,
-                          shouldAnimate:
-                              chatProvider.getChatList.length - 1 == index,
+                          shouldAnimate: chatProvider.getChatList.length - 1 == index,
                         );
                       },
                     ),
@@ -107,7 +105,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Image.asset(
-                                      AssetsManager.userImage,
+                                      AssetsManager.aiDoctor,
                                       height: 100,
                                       width: 100,
                                       fit: BoxFit.cover,
@@ -115,8 +113,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                                     Container(width: 20),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Container(height: 5),
                                           Text(
@@ -160,7 +157,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Image.asset(
-                                      AssetsManager.userImage,
+                                      AssetsManager.aiCompanion,
                                       height: 100,
                                       width: 100,
                                       fit: BoxFit.cover,
@@ -168,8 +165,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                                     Container(width: 20),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Container(height: 5),
                                           Text(
@@ -181,6 +177,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                                             ),
                                           ),
                                           Container(height: 5),
+                                          
                                           Container(height: 10),
                                           Text(
                                             "Get inspired and stay healthy with your personal assistant powered by generative AI.",
@@ -213,7 +210,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Image.asset(
-                                      AssetsManager.userImage,
+                                      AssetsManager.voice,
                                       height: 100,
                                       width: 100,
                                       fit: BoxFit.cover,
@@ -221,8 +218,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                                     Container(width: 20),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Container(height: 5),
                                           Text(
@@ -234,6 +230,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                                             ),
                                           ),
                                           Container(height: 5),
+                                         
                                           Container(height: 10),
                                           Text(
                                             "Get the best of both worlds with a voice assistant powered by AI Doctor",
@@ -253,7 +250,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                         ),
                       ],
                     ),
-                  const Spacer(),
+                    Spacer(),
                   ],
                 ],
               ),
@@ -321,7 +318,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
           content: TextWidget(
             label: "You can't send multiple messages at a time",
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.red,
         ),
       );
       return;
@@ -332,7 +329,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
           content: TextWidget(
             label: "Please type a message",
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.red,
         ),
       );
       return;

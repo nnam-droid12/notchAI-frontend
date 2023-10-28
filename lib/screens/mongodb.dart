@@ -14,4 +14,11 @@ class MongoDatabase {
     // ignore: avoid_print
     print(await collection.find().toList());
   }
+
+  static Future<void> insert() async {
+    try {} catch (e) {
+      // ignore: avoid_print
+      print(e.toString());
+    }
+  }
 }

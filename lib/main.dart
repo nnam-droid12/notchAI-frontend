@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notchai_frontend/screens/bottom_navigation.dart';
 import 'package:notchai_frontend/screens/mongodb.dart';
-// import 'package:notchai_frontend/screens/signin.dart';
+import 'package:notchai_frontend/screens/signin.dart';
 import 'package:notchai_frontend/utils/app_styles.dart';
 import 'package:notchai_frontend/provider/chats_provider.dart';
 import 'package:notchai_frontend/provider/models_provider.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: primary,
         ),
-        home: const BottomNavBar(),
+        home: const Signin(),
       ),
     );
   }

@@ -3,8 +3,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:notchai_frontend/models/PredictionDbModel.dart';
 import 'dart:io';
-
+import 'package:mongo_dart/mongo_dart.dart' as M;
 import 'package:notchai_frontend/screens/community_home_screen.dart';
 
 class ScanTech extends StatefulWidget {
@@ -65,6 +66,7 @@ class _ScanTechState extends State<ScanTech> {
         throw Exception('Failed to load data from OpenAI API');
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error: $e');
       return [];
     }
@@ -103,9 +105,11 @@ class _ScanTechState extends State<ScanTech> {
 
           setState(() {});
         } else {
+          // ignore: avoid_print
           print('Error: ${response.reasonPhrase}');
         }
       } catch (e) {
+        // ignore: avoid_print
         print('Error: $e');
       }
     }
@@ -283,16 +287,4 @@ class _ScanTechState extends State<ScanTech> {
       ),
     );
   }
-}
-
-class Prediction {
-  final String name;
-  final double confidence;
-  bool showCausesAndRecommendations;
-
-  Prediction({
-    required this.name,
-    required this.confidence,
-    this.showCausesAndRecommendations = false,
-  });
 }

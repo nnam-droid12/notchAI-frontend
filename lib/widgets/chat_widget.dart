@@ -36,7 +36,7 @@ class ChatWidget extends StatelessWidget {
                     : Image.asset(
                         chatIndex == 0
                             ? AssetsManager.userImage
-                            : AssetsManager.notchaiLogo,
+                            : AssetsManager.notchAiLogo,
                         height: 60,
                         width: 60,
                       ),
