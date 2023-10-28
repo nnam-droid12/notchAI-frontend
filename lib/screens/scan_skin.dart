@@ -123,7 +123,7 @@ class _ScanTechState extends State<ScanTech> {
       appBar: AppBar(
         elevation: 2,
         leading: Image.asset(
-          AssetsManager.notchAiLogo,
+          AssetsManager.notchaiLogo,
           fit: BoxFit.contain,
         ),
         backgroundColor: const Color(0xFF00C6AD), // App bar background color

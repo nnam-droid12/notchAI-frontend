@@ -49,9 +49,10 @@ class _AiChatScreenState extends State<AiChatScreen> {
       appBar: AppBar(
         elevation: 2,
         leading: Image.asset(
-          AssetsManager.notchAiLogo,
+          AssetsManager.notchaiLogo,
           fit: BoxFit.contain,
         ),
+        backgroundColor: const Color(0xFF00C6AD),
         title: const Text("NotchAI"),
         actions: [
           IconButton(
@@ -65,181 +66,71 @@ class _AiChatScreenState extends State<AiChatScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Flexible(
-              child: Column(
+            Expanded(
+              child: ListView.builder(
+                controller: _listScrollController,
+                itemCount: chatProvider.getChatList.length,
+                itemBuilder: (context, index) {
+                  return ChatWidget(
+                    msg: chatProvider.getChatList[index].msg,
+                    chatIndex: chatProvider.getChatList[index].chatIndex,
+                    shouldAnimate:
+                        chatProvider.getChatList.length - 1 == index,
+                  );
+                },
+              ),
+            ),
+            if (_isTyping) ...[
+              const SpinKitThreeBounce(
+                color: Colors.white,
+                size: 18,
+              ),
+            ],
+            if (!userHasSubmittedFirstPrompt) ...[
+              const SizedBox(height: 15),
+              Column(
                 children: [
-                  Expanded(
-                    child: ListView.builder(
-                      controller: _listScrollController,
-                      itemCount: chatProvider.getChatList.length,
-                      itemBuilder: (context, index) {
-                        return ChatWidget(
-                          msg: chatProvider.getChatList[index].msg,
-                          chatIndex: chatProvider.getChatList[index].chatIndex,
-                          shouldAnimate: chatProvider.getChatList.length - 1 == index,
-                        );
-                      },
+                  Card(
+                    color: const Color(0xFF00C6AD),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                  ),
-                  if (_isTyping) ...[
-                    const SpinKitThreeBounce(
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ],
-                  if (!userHasSubmittedFirstPrompt) ...[
-                    const SizedBox(height: 15),
-                    Column(
-                      children: [
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: Column(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Row(
+                              Image.asset(
+                                AssetsManager.userImage,
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
+                              Container(width: 20),
+                              Expanded(
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Image.asset(
-                                      AssetsManager.aiDoctor,
-                                      height: 100,
-                                      width: 100,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Container(width: 20),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(height: 5),
-                                          Text(
-                                            "AI Doctor",
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey[800],
-                                            ),
-                                          ),
-                                          Container(height: 5),
-                                          Container(height: 10),
-                                          Text(
-                                            "A smarter way to stay organized and informed with AI doctor.",
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                              color: Colors.grey[700],
-                                            ),
-                                          ),
-                                        ],
+                                    Container(height: 5),
+                                    const Text(
+                                      "AI Doctor",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      AssetsManager.aiCompanion,
-                                      height: 100,
-                                      width: 100,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Container(width: 20),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(height: 5),
-                                          Text(
-                                            "Your AI Companion",
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey[800],
-                                            ),
-                                          ),
-                                          Container(height: 5),
-                                          
-                                          Container(height: 10),
-                                          Text(
-                                            "Get inspired and stay healthy with your personal assistant powered by generative AI.",
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                              color: Colors.grey[700],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      AssetsManager.voice,
-                                      height: 100,
-                                      width: 100,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Container(width: 20),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(height: 5),
-                                          Text(
-                                            "Smart Voice Assistant",
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey[800],
-                                            ),
-                                          ),
-                                          Container(height: 5),
-                                         
-                                          Container(height: 10),
-                                          Text(
-                                            "Get the best of both worlds with a voice assistant powered by AI Doctor",
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                              color: Colors.grey[700],
-                                            ),
-                                          ),
-                                        ],
+                                    Container(height: 5),
+                                    Container(height: 10),
+                                    const Text(
+                                      "A smarter way to stay organized and informed with AI doctor.",
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ],
@@ -250,11 +141,118 @@ class _AiChatScreenState extends State<AiChatScreen> {
                         ),
                       ],
                     ),
-                    Spacer(),
-                  ],
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    color: const Color(0xFF00C6AD),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Image.asset(
+                                AssetsManager.companion,
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
+                              Container(width: 20),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(height: 5),
+                                    const Text(
+                                      "Your AI Companion",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Container(height: 5),
+                                    Container(height: 10),
+                                    const Text(
+                                      "Get inspired and stay healthy with your personal assistant powered by generative AI.",
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    color: const Color(0xFF00C6AD),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Image.asset(
+                                AssetsManager.voice,
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
+                              Container(width: 20),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(height: 5),
+                                    const Text(
+                                      "Smart Voice Assistant",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Container(height: 5),
+                                    Container(height: 10),
+                                    const Text(
+                                      "Get the best of both worlds with a voice assistant powered by AI Doctor",
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
+              const Spacer(),
+            ],
+            // Input Field outside of ListView
             Material(
               color: cardColor,
               child: Padding(
@@ -272,8 +270,9 @@ class _AiChatScreenState extends State<AiChatScreen> {
                               chatProvider: chatProvider);
                         },
                         decoration: const InputDecoration.collapsed(
-                            hintText: "How may I help?",
-                            hintStyle: TextStyle(color: Colors.white70)),
+                          hintText: "How may I help?",
+                          hintStyle: TextStyle(color: Colors.white70),
+                        ),
                       ),
                     ),
                     IconButton(
@@ -318,7 +317,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
           content: TextWidget(
             label: "You can't send multiple messages at a time",
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: Color(0xFFB2FFFF),
         ),
       );
       return;
@@ -329,7 +328,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
           content: TextWidget(
             label: "Please type a message",
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: Color(0xFFB2FFFF),
         ),
       );
       return;
@@ -351,6 +350,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
           msg: msg, chosenModelId: modelsProvider.getCurrentModel);
       setState(() {});
     } catch (error) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: TextWidget(
           label: error.toString(),
