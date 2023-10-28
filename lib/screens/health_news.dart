@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:notchai_frontend/screens/full_news_screen.dart';
 
 class HealthNews extends StatefulWidget {
   const HealthNews({Key? key}) : super(key: key);
@@ -12,7 +14,7 @@ class HealthNews extends StatefulWidget {
 
 class _HealthNewsState extends State<HealthNews> {
   List<dynamic> newsData = [];
-  static final healthApikey = dotenv.env["HealthNews_API_KEY"];
+  static final healthApikey = dotenv.env['HealthNews_API_KEY'];
 
   @override
   void initState() {
@@ -36,8 +38,9 @@ class _HealthNewsState extends State<HealthNews> {
         throw Exception('Failed to load health news');
       }
     } catch (error) {
-      // ignore: avoid_print
-      print('Error: $error');
+      if (kDebugMode) {
+        print('Error: $error');
+      }
     }
   }
 
@@ -46,7 +49,7 @@ class _HealthNewsState extends State<HealthNews> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Health News'),
-        backgroundColor: const Color(0xFF097969),
+        backgroundColor: const Color(0xFF00C6AD), 
       ),
       body: ListView.builder(
         itemCount: newsData.length,
@@ -54,37 +57,56 @@ class _HealthNewsState extends State<HealthNews> {
           final article = newsData[index];
           final String imageUrl = article['urlToImage'] ?? '';
 
-          return ListTile(
-            contentPadding: const EdgeInsets.all(8.0),
-            leading: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                border: Border.all(color: const Color(0xFF097969), width: 2.0),
-              ),
-              child: ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(10.0), // Clip rounded corners
-                child: imageUrl.isNotEmpty
-                    ? Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(
-                        color: Colors.grey, // Placeholder color
-                      ),
+          return Card(
+            elevation: 4,
+            margin: const EdgeInsets.all(16),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FullNewsPage(article: article),
+                  ),
+                );
+              },
+              child: Column(
+                children: [
+                  imageUrl.isNotEmpty
+                      ? Image.network(
+                          imageUrl,
+                          fit: BoxFit.cover,
+                        )
+                      : Container(
+                          height: 150,
+                          color: Colors.grey,
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          article['title'] ?? 'No title available',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          article['description'] ?? 'No description available',
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            title: Text(article['title'] ?? 'No title available'),
-            subtitle:
-                Text(article['description'] ?? 'No description available'),
-            onTap: () {
-              // Add your onTap logic here
-            },
           );
         },
       ),
     );
   }
 }
+

@@ -3,15 +3,17 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:notchai_frontend/models/PredictionDbModel.dart';
 import 'dart:io';
-import 'package:mongo_dart/mongo_dart.dart' as M;
+
 import 'package:notchai_frontend/screens/community_home_screen.dart';
+import 'package:notchai_frontend/services/assets_manager.dart';
+import 'package:notchai_frontend/services/services.dart';
 
 class ScanTech extends StatefulWidget {
   const ScanTech({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ScanTechState createState() => _ScanTechState();
 }
 
@@ -20,10 +22,10 @@ class _ScanTechState extends State<ScanTech> {
   Prediction? highestAccuracyPrediction;
   static final openaiApikey = dotenv.env["OPENAI_API_KEY"];
   static final autodermApikey = dotenv.env["Autoderm_API_KEY"];
+  bool isAnalyzing = false;
 
   Future<void> _selectImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         selectedImage = File(pickedFile.path);
@@ -31,8 +33,7 @@ class _ScanTechState extends State<ScanTech> {
     }
   }
 
-  Future<List<String>> _getCausesAndRecommendations(
-      String predictionName) async {
+  Future<List<String>> _getCausesAndRecommendations(String predictionName) async {
     try {
       final response = await http.post(
         Uri.parse('https://api.openai.com/v1/chat/completions'),
@@ -59,15 +60,12 @@ class _ScanTechState extends State<ScanTech> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final completions =
-            data['choices'][0]['message']['content'].split('\n');
+        final completions = data['choices'][0]['message']['content'].split('\n');
         return completions;
       } else {
         throw Exception('Failed to load data from OpenAI API');
       }
     } catch (e) {
-      // ignore: avoid_print
-      print('Error: $e');
       return [];
     }
   }
@@ -75,16 +73,19 @@ class _ScanTechState extends State<ScanTech> {
   Future<void> _analyzeImage() async {
     if (selectedImage != null) {
       try {
-        var request = http.MultipartRequest(
-            'POST', Uri.parse('https://autoderm.firstderm.com/v1/query'));
+        setState(() {
+          isAnalyzing = true;
+        });
+
+        var request =
+            http.MultipartRequest('POST', Uri.parse('https://autoderm.firstderm.com/v1/query'));
 
         request.headers['Api-Key'] = '$autodermApikey';
 
         request.fields['model'] = 'autoderm_v2_0';
         request.fields['language'] = 'en';
 
-        request.files.add(
-            await http.MultipartFile.fromPath('file', selectedImage!.path));
+        request.files.add(await http.MultipartFile.fromPath('file', selectedImage!.path));
 
         var response = await request.send();
         if (response.statusCode == 200) {
@@ -93,7 +94,6 @@ class _ScanTechState extends State<ScanTech> {
 
           var predictions = jsonData['predictions'];
 
-          // double highestConfidence = 0.0;
           Prediction highestConfidencePrediction = predictions
               .map((prediction) => Prediction(
                     name: prediction['name'],
@@ -105,12 +105,14 @@ class _ScanTechState extends State<ScanTech> {
 
           setState(() {});
         } else {
-          // ignore: avoid_print
-          print('Error: ${response.reasonPhrase}');
+          // print('Error: ${response.reasonPhrase}');
         }
       } catch (e) {
-        // ignore: avoid_print
-        print('Error: $e');
+        // print('Error: $e');
+      } finally {
+        setState(() {
+          isAnalyzing = false;
+        });
       }
     }
   }
@@ -119,172 +121,248 @@ class _ScanTechState extends State<ScanTech> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scan Skin'),
-        backgroundColor: const Color(0xFF097969),
+        elevation: 2,
+        leading: Image.asset(
+          AssetsManager.notchAiLogo,
+          fit: BoxFit.contain,
+        ),
+        backgroundColor: const Color(0xFF00C6AD), // App bar background color
+        title: const Text("ScanSkin"),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await Services.showModalSheet(context: context);
+            },
+            icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
+          ),
+        ],
       ),
-      body: ListView(
+      body: Stack(
         children: <Widget>[
-          const SizedBox(height: 20),
           Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            color: const Color(0xFF097969),
-            child: const Text(
-              'Send me a good picture that describes your skin concern',
-              style: TextStyle(color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: const Color(0xFF097969),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: [
-                selectedImage != null
-                    ? Image.file(selectedImage!, height: 200, width: 200)
-                    : const Text('No Image Selected'),
-                ElevatedButton(
-                  onPressed: _selectImage,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF097969),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text('Select Image'),
-                ),
-                ElevatedButton(
-                  onPressed: _analyzeImage,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF097969),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text('Analyze Image'),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          if (highestAccuracyPrediction != null)
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: const Color(0xFF097969),
-                borderRadius: BorderRadius.circular(10),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFFB2FFFF), Color(0xFFB2FFFF)], // Background gradient color
               ),
+            ),
+          ),
+          Center(
+            child: SingleChildScrollView(
               child: Column(
-                children: [
-                  const Text(
-                    'Highest Confidence Diagnostic Result',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  const SizedBox(height: 10),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
                   Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(10),
+                    width: 200,
+                    height: 200,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF097969),
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.transparent,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 3.0,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          highestAccuracyPrediction!.name,
-                          style: const TextStyle(color: Colors.white),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        if (!highestAccuracyPrediction!
-                            .showCausesAndRecommendations)
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                highestAccuracyPrediction!
-                                    .showCausesAndRecommendations = true;
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: const Text('See Causes and Recommendations'),
+                    child: selectedImage != null
+                        ? Image.file(selectedImage!, fit: BoxFit.cover)
+                        : const Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                            size: 64,
                           ),
-                      ],
-                    ),
                   ),
-                  if (highestAccuracyPrediction!.showCausesAndRecommendations)
-                    FutureBuilder<List<String>>(
-                      future: _getCausesAndRecommendations(
-                          highestAccuracyPrediction!.name),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          var causesAndRecommendations = snapshot.data;
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Causes and Recommendations:',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: _selectImage,
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: const Color(0xFF00C6AD), // Button background color
+                          elevation: 5,
+                          shadowColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.all(20),
+                        ),
+                        child: const Row(
+                          children: <Widget>[
+                            Icon(Icons.image),
+                            SizedBox(width: 10),
+                            Text('Select Image'),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: () => _analyzeImage(),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: const Color(0xFF00C6AD), // Button background color
+                          elevation: 5,
+                          shadowColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.all(20),
+                        ),
+                        child: isAnalyzing
+                            ? const CircularProgressIndicator()
+                            : const Row(
+                                children: <Widget>[
+                                  Icon(Icons.analytics),
+                                  SizedBox(width: 10),
+                                  Text('Scan Image'),
+                                ],
                               ),
-                              if (causesAndRecommendations != null)
-                                for (var item in causesAndRecommendations)
-                                  Text('- $item',
-                                      style:
-                                          const TextStyle(color: Colors.white)),
-                            ],
-                          );
-                        }
-                      },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  if (highestAccuracyPrediction != null)
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Diagnostic Result',
+                            style: TextStyle(
+                              color: Color(0xFF00C6AD), // Text color
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: const Color(0xFF00C6AD)), // Border color
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  highestAccuracyPrediction!.name,
+                                  style: const TextStyle(
+                                    color: Color(0xFF00C6AD), // Text color
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                if (!highestAccuracyPrediction!.showCausesAndRecommendations)
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        highestAccuracyPrediction?.showCausesAndRecommendations = true;
+                                      });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: const Color(0xFF00C6AD), // Button background color
+                                      elevation: 5,
+                                      shadowColor: Colors.black,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: const EdgeInsets.all(20),
+                                    ),
+                                    child: const Text('Causes and Recommendations'),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          if (highestAccuracyPrediction!.showCausesAndRecommendations)
+                            FutureBuilder<List<String>>(
+                              future: _getCausesAndRecommendations(highestAccuracyPrediction!.name),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  var causesAndRecommendations = snapshot.data;
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      const SizedBox(height: 10),
+                                      const Text(
+                                        'Causes and Recommendations:',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF00C6AD), // Text color
+                                        ),
+                                      ),
+                                      if (causesAndRecommendations != null)
+                                        for (var item in causesAndRecommendations)
+                                          Text(
+                                            '- $item',
+                                            style: const TextStyle(
+                                              color: Color(0xFF00C6AD), // Text color
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
+                        ],
+                      ),
                     ),
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const CommunityHomeScreen(),
+                      ));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color(0xFF00C6AD), // Button background color
+                      elevation: 8,
+                      shadowColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      minimumSize: const Size(double.infinity, 50),
+                      side: const BorderSide(
+                        color: Color(0xFF00C6AD), // Border color
+                        width: 2,
+                      ),
+                    ),
+                    icon: const Icon(Icons.group, size: 28),
+                    label: const Text('Join Community'),
+                  ),
                 ],
               ),
             ),
-          Column(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF097969),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const CommunityHomeScreen(),
-                    ));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFF097969),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text('Join Community'),
-                ),
-              ),
-            ],
           ),
         ],
       ),
     );
   }
+}
+
+class Prediction {
+  final String name;
+  final double confidence;
+  bool showCausesAndRecommendations;
+
+  Prediction({
+    required this.name,
+    required this.confidence,
+    this.showCausesAndRecommendations = false,
+  });
 }

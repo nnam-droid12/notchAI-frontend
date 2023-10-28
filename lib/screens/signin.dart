@@ -33,7 +33,7 @@ class _SigninState extends State<Signin> {
         context, MaterialPageRoute(builder: (context) => BottomNavBar()));
   }
 
-  User user = User('', '');
+  User user = User('', '', '');
 
   @override
   Widget build(BuildContext context) {

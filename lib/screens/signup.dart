@@ -24,15 +24,18 @@ class _SignupState extends State<Signup> {
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8'
       },
-      body: jsonEncode(
-          <String, String>{'email': user.email, 'password': user.password}),
+      body: jsonEncode(<String, String>{
+        'name': user.name,
+        'email': user.email,
+        'password': user.password
+      }),
     );
 
     print(res.body);
     Navigator.push(context, MaterialPageRoute(builder: (context) => Signin()));
   }
 
-  User user = User('', '');
+  User user = User('', '', '');
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +74,44 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(
                       height: 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(text: user.name),
+                        onChanged: (value) {
+                          user.name = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter something';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          icon: const Icon(
+                            Icons.person,
+                            color: Color(0xFF097969),
+                          ),
+                          hintText: 'Enter Name',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
