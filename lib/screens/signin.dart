@@ -35,6 +35,7 @@ class _SigninState extends State<Signin> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('email', user.email);
       prefs.setString('password', user.password);
+      
 
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => BottomNavBar()));
