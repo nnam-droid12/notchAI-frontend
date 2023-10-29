@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:notchai_frontend/screens/ai_chat_screen.dart';
 import 'package:notchai_frontend/pages/doctor_home.dart';
-import 'package:notchai_frontend/utils/app_styles.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -10,176 +9,188 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Styles.bgColor,
-      body: ListView(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              children: [
-                const Gap(35),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Good Morning",
-                          style: Styles.headlineStyle3,
-                        ),
-                        const Gap(5),
-                        Text(
-                          "Your Health Our Priority",
-                          style: Styles.headlineStyle1,
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        image: const DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/images/doc1.png"),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const Gap(25),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white70,
-                  ),
-                  child: Row(
+      backgroundColor: const Color(0xFF00C6AD),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                  const Gap(35),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Icon(
-                        Icons.search,
-                        color: Colors.blueGrey,
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Good Morning",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Gap(5),
+                          Text(
+                            "Your Health, Our Priority!",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Search",
-                        style: Styles.headlineStyle3,
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/images/doc1.png"),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-                const Gap(40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Health Records",
-                      style: Styles.headlineStyle3,
+                  const Gap(25),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: const Color(0xFFB2FFFF),
                     ),
-                    InkWell(
-                      onTap: () {
-                        // ignore: avoid_print
-                        print("you tap view all");
-                      },
-                      child: Text(
-                        "View All",
-                        style:
-                            Styles.textStyle.copyWith(color: Colors.blueGrey),
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.search,
+                          color: Colors.blueGrey,
+                        ),
+                        Text(
+                          "Search",
+                          style: TextStyle(
+                            color: Colors.blueGrey,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Gap(40),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                     Text(
+                      "Welcome to NotchAI 👋🤗👨‍⚕️🩺",
+                      style: TextStyle(
+                      color: Colors.white, // Text color
+                      fontSize: 20, // Font size
+                      fontWeight: FontWeight.bold, // Text weight         
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    )
+                                        
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Gap(20),
+            const Gap(20),
 
-          // New Section 1: Appointment Categories
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Gap(40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Appointment Categories",
-                      style: Styles.headlineStyle3,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Redirect to another page for appointment categories
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const DoctorHomePage(),
-                        ));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF097969),
-                        foregroundColor: Colors.white,
+            // New Section 1: Appointment Categories
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Gap(40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Appointment Categories",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      child: const Text("View All"),
-                    ),
-                  ],
-                ),
-                const Gap(10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildCategoryItem("General", "assets/images/gene1.jpg"),
-                    _buildCategoryItem("Pediatrics", "assets/images/gene2.jpg"),
-                    _buildCategoryItem("Dentistry", "assets/images/doc1.png"),
-                  ],
-                ),
-                const Gap(20),
-              ],
+                      ElevatedButton(
+                        onPressed: () {
+                          // Redirect to another page for appointment categories
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const DoctorHomePage(),
+                          ));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF097969),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text("Explore"),
+                      ),
+                    ],
+                  ),
+                  const Gap(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildCategoryItem("General", "assets/images/gene1.jpg"),
+                      _buildCategoryItem("Pediatrics", "assets/images/gene2.jpg"),
+                      _buildCategoryItem("Dentistry", "assets/images/doc1.png"),
+                    ],
+                  ),
+                  const Gap(20),
+                ],
+              ),
             ),
-          ),
 
-          // New Section 2: AI Recommendations
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "AI Recommendations",
-                      style: Styles.headlineStyle3,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const AiChatScreen(),
-                        ));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF097969),
-                        foregroundColor: Colors.white,
+            // New Section 2: AI Recommendations
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "AI Recommendations",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      child: const Text(
-                        "View All",
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const AiChatScreen(),
+                          ));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF097969),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text("Explore"),
                       ),
-                    ),
-                  ],
-                ),
-                const Gap(10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildRecommendationItem(
-                        "Skin Issue", "assets/images/gene1.jpg"),
-                    _buildRecommendationItem(
-                        "Eye Checkup", "assets/images/gene2.jpg"),
-                  ],
-                ),
-                const Gap(20),
-              ],
+                    ],
+                  ),
+                  const Gap(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildRecommendationItem(
+                          "Skin Issue", "assets/images/gene1.jpg"),
+                      _buildRecommendationItem(
+                          "Eye Checkup", "assets/images/gene2.jpg"),
+                    ],
+                  ),
+                  const Gap(20),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -206,7 +217,10 @@ class HomeScreen extends StatelessWidget {
         const Gap(8),
         Text(
           title,
-          style: Styles.textStyle.copyWith(color: Colors.blueGrey),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
         ),
       ],
     );
@@ -234,7 +248,10 @@ class HomeScreen extends StatelessWidget {
         const Gap(8),
         Text(
           title,
-          style: Styles.textStyle.copyWith(color: Colors.blueGrey),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
         ),
       ],
     );
@@ -242,6 +259,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 class AppointmentCategoriesPage extends StatelessWidget {
+  const AppointmentCategoriesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

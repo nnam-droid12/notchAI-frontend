@@ -4,16 +4,16 @@ import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:io';
-
 import 'package:notchai_frontend/screens/community_home_screen.dart';
 import 'package:notchai_frontend/services/assets_manager.dart';
 import 'package:notchai_frontend/services/services.dart';
+import 'package:scanning_effect/scanning_effect.dart';
+import 'package:animated_text_kit/animated_text_kit.dart'; 
 
 class ScanTech extends StatefulWidget {
   const ScanTech({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _ScanTechState createState() => _ScanTechState();
 }
 
@@ -23,6 +23,8 @@ class _ScanTechState extends State<ScanTech> {
   static final openaiApikey = dotenv.env["OPENAI_API_KEY"];
   static final autodermApikey = dotenv.env["Autoderm_API_KEY"];
   bool isAnalyzing = false;
+  bool isGeneratingCausesAndRecommendations = false;
+  bool showResultText = false; 
 
   Future<void> _selectImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -101,14 +103,14 @@ class _ScanTechState extends State<ScanTech> {
                   ))
               .reduce((a, b) => a.confidence > b.confidence ? a : b);
 
-          highestAccuracyPrediction = highestConfidencePrediction;
-
-          setState(() {});
+          setState(() {
+            highestAccuracyPrediction = highestConfidencePrediction;
+          });
         } else {
-          // print('Error: ${response.reasonPhrase}');
+          // Handle error
         }
       } catch (e) {
-        // print('Error: $e');
+        // Handle error
       } finally {
         setState(() {
           isAnalyzing = false;
@@ -126,8 +128,9 @@ class _ScanTechState extends State<ScanTech> {
           AssetsManager.notchaiLogo,
           fit: BoxFit.contain,
         ),
-        backgroundColor: const Color(0xFF00C6AD), // App bar background color
-        title: const Text("ScanSkin"),
+        
+        backgroundColor: const Color(0xFF00C6AD),
+        title: const Text("Scan Skin"),
         actions: [
           IconButton(
             onPressed: () async {
@@ -135,8 +138,10 @@ class _ScanTechState extends State<ScanTech> {
             },
             icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
           ),
-        ],
+          ],
+
       ),
+      
       body: Stack(
         children: <Widget>[
           Container(
@@ -144,11 +149,11 @@ class _ScanTechState extends State<ScanTech> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFFB2FFFF), Color(0xFFB2FFFF)], // Background gradient color
-              ),
-            ),
-          ),
-          Center(
+                colors: [Color(0xFFB2FFFF), Color(0xFFB2FFFF)],
+              ),       
+              ),     
+          ),     
+        Center(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -164,13 +169,33 @@ class _ScanTechState extends State<ScanTech> {
                       ),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: selectedImage != null
-                        ? Image.file(selectedImage!, fit: BoxFit.cover)
-                        : const Icon(
-                            Icons.camera_alt,
-                            color: Colors.white,
-                            size: 64,
-                          ),
+                    child: isAnalyzing
+                        ? Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              ClipRRect( 
+                                borderRadius: BorderRadius.circular(16), 
+                                child: Image.file(selectedImage!, fit: BoxFit.cover),
+                              ),
+                              const ScanningEffect( 
+                                scanningColor: Colors.green,
+                                borderLineColor: Color(0xFF00C6AD),
+                                delay: Duration(milliseconds: 500),
+                                duration: Duration(milliseconds: 700),
+                                child: SizedBox(),
+                              )
+                            ],
+                          )
+                        : selectedImage != null
+                            ? ClipRRect(
+                                 borderRadius: BorderRadius.circular(16), 
+                                 child: Image.file(selectedImage!, fit: BoxFit.cover),
+                           )
+                            : const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 64,
+                              ),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -180,7 +205,7 @@ class _ScanTechState extends State<ScanTech> {
                         onPressed: _selectImage,
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: const Color(0xFF00C6AD), // Button background color
+                          backgroundColor: const Color(0xFF00C6AD),
                           elevation: 5,
                           shadowColor: Colors.black,
                           shape: RoundedRectangleBorder(
@@ -201,7 +226,7 @@ class _ScanTechState extends State<ScanTech> {
                         onPressed: () => _analyzeImage(),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: const Color(0xFF00C6AD), // Button background color
+                          backgroundColor: const Color(0xFF00C6AD),
                           elevation: 5,
                           shadowColor: Colors.black,
                           shape: RoundedRectangleBorder(
@@ -210,7 +235,19 @@ class _ScanTechState extends State<ScanTech> {
                           padding: const EdgeInsets.all(20),
                         ),
                         child: isAnalyzing
-                            ? const CircularProgressIndicator()
+                            ?  Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Text('Scanning Image'), // Show text
+                                  ScanningEffect( 
+                                    scanningColor: Colors.green,
+                                    borderLineColor: Color(0xFF00C6AD),
+                                    delay: Duration(milliseconds: 500),
+                                    duration: Duration(milliseconds: 700),
+                                    child: SizedBox(),
+                                  )
+                                ],
+                              )
                             : const Row(
                                 children: <Widget>[
                                   Icon(Icons.analytics),
@@ -236,7 +273,7 @@ class _ScanTechState extends State<ScanTech> {
                           const Text(
                             'Diagnostic Result',
                             style: TextStyle(
-                              color: Color(0xFF00C6AD), // Text color
+                              color: Color(0xFF00C6AD),
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
@@ -246,29 +283,24 @@ class _ScanTechState extends State<ScanTech> {
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              border: Border.all(color: const Color(0xFF00C6AD)), // Border color
+                              border: Border.all(color: const Color(0xFF00C6AD)),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                  highestAccuracyPrediction!.name,
-                                  style: const TextStyle(
-                                    color: Color(0xFF00C6AD), // Text color
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                if (!highestAccuracyPrediction!.showCausesAndRecommendations)
+                                if (!showResultText)
                                   ElevatedButton(
                                     onPressed: () {
                                       setState(() {
+                                        isGeneratingCausesAndRecommendations = true;
                                         highestAccuracyPrediction?.showCausesAndRecommendations = true;
+                                        showResultText = true; // Start the text animation
                                       });
                                     },
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white,
-                                      backgroundColor: const Color(0xFF00C6AD), // Button background color
+                                      backgroundColor: const Color(0xFF00C6AD),
                                       elevation: 5,
                                       shadowColor: Colors.black,
                                       shape: RoundedRectangleBorder(
@@ -277,6 +309,18 @@ class _ScanTechState extends State<ScanTech> {
                                       padding: const EdgeInsets.all(20),
                                     ),
                                     child: const Text('Causes and Recommendations'),
+                                  ),
+                                if (showResultText) 
+                                  AnimatedTextKit(
+                                    animatedTexts: [
+                                      TyperAnimatedText(
+                                        highestAccuracyPrediction!.name,
+                                        textStyle: const TextStyle(
+                                          color: Color(0xFF00C6AD),
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                               ],
                             ),
@@ -300,16 +344,26 @@ class _ScanTechState extends State<ScanTech> {
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
-                                          color: Color(0xFF00C6AD), // Text color
+                                          color: Color(0xFF00C6AD),
                                         ),
                                       ),
                                       if (causesAndRecommendations != null)
                                         for (var item in causesAndRecommendations)
-                                          Text(
-                                            '- $item',
-                                            style: const TextStyle(
-                                              color: Color(0xFF00C6AD), // Text color
-                                              fontSize: 16,
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 8),
+                                            child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(color: const Color(0xFF00C6AD)),
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              child: Text(
+                                                item,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                     ],
@@ -329,7 +383,7 @@ class _ScanTechState extends State<ScanTech> {
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: const Color(0xFF00C6AD), // Button background color
+                      backgroundColor: const Color(0xFF00C6AD),
                       elevation: 8,
                       shadowColor: Colors.black,
                       shape: RoundedRectangleBorder(
@@ -338,7 +392,7 @@ class _ScanTechState extends State<ScanTech> {
                       padding: const EdgeInsets.all(20),
                       minimumSize: const Size(double.infinity, 50),
                       side: const BorderSide(
-                        color: Color(0xFF00C6AD), // Border color
+                        color: Color(0xFF00C6AD),
                         width: 2,
                       ),
                     ),
@@ -362,7 +416,7 @@ class Prediction {
 
   Prediction({
     required this.name,
-    required this.confidence,
+    required this .confidence,
     this.showCausesAndRecommendations = false,
   });
 }

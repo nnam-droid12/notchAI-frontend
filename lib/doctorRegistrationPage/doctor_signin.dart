@@ -2,41 +2,41 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:notchai_frontend/doctorRegistrationPage/doctor.dart';
 import 'package:notchai_frontend/doctorRegistrationPage/doctor_signup.dart';
-import 'package:notchai_frontend/screens/signup.dart';
-import 'package:notchai_frontend/screens/user.dart';
+
 import 'package:notchai_frontend/screens/bottom_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:notchai_frontend/screens/signin.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Signin extends StatefulWidget {
-  const Signin({super.key});
+class DoctorSignin extends StatefulWidget {
+  const DoctorSignin({super.key});
 
   @override
-  _SigninState createState() => _SigninState();
+  _DoctorSigninState createState() => _DoctorSigninState();
 }
 
-class _SigninState extends State<Signin> {
+class _DoctorSigninState extends State<DoctorSignin> {
   final _formKey = GlobalKey<FormState>();
 
   Future save() async {
-    var url = Uri.parse("https://notchai-backend.up.railway.app/signin");
+    var url = Uri.parse("https://notchai-backend.up.railway.app/doctor-signin");
     var res = await http.post(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charSet=UTF-8'
       },
       body: jsonEncode(
-          <String, String>{'email': user.email, 'password': user.password}),
+          <String, String>{'email': doctor.email, 'password': doctor.password}),
     );
 
     if (res.statusCode == 200) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('email', user.email);
-      prefs.setString('password', user.password);
-      
+      prefs.setString('email', doctor.email);
+      prefs.setString('password', doctor.password);
 
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => BottomNavBar()));
@@ -46,7 +46,7 @@ class _SigninState extends State<Signin> {
     print(res.body);
   }
 
-  User user = User('', '', '');
+  Doctor doctor = Doctor('', '', '', '', '', '', '');
 
   @override
   void initState() {
@@ -61,8 +61,8 @@ class _SigninState extends State<Signin> {
 
     if (email != null && password != null) {
       setState(() {
-        user.email = email;
-        user.password = password;
+        doctor.email = email;
+        doctor.password = password;
       });
     }
   }
@@ -95,7 +95,7 @@ class _SigninState extends State<Signin> {
                       height: 150,
                     ),
                     Text(
-                      "User Signin",
+                      "Doctor Signin",
                       style: GoogleFonts.pacifico(
                         fontWeight: FontWeight.bold,
                         fontSize: 50,
@@ -108,9 +108,9 @@ class _SigninState extends State<Signin> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
-                        controller: TextEditingController(text: user.email),
+                        controller: TextEditingController(text: doctor.email),
                         onChanged: (value) {
-                          user.email = value;
+                          doctor.email = value;
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -151,9 +151,10 @@ class _SigninState extends State<Signin> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
-                        controller: TextEditingController(text: user.password),
+                        controller:
+                            TextEditingController(text: doctor.password),
                         onChanged: (value) {
-                          user.password = value;
+                          doctor.password = value;
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -204,53 +205,23 @@ class _SigninState extends State<Signin> {
                                 _formKey.currentState!.validate()) {
                               save();
                             } else {
+                              // ignore: avoid_print
                               print("not ok");
                             }
                           },
                           child: const Text(
-                            "Signin",
+                            "Doctor Signin",
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(60, 20, 0, 0),
                       child: Row(
                         children: [
                           const Text(
-                            "Not have Account ? ",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Signup(),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              "Signup",
-                              style: TextStyle(
-                                color: Color(0xFF097969),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
-                      child: Row(
-                        children: [
-                          const Text(
-                            "Are You a Doctor ? ",
+                            "Not have a Doctor Account ? ",
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -266,7 +237,38 @@ class _SigninState extends State<Signin> {
                               );
                             },
                             child: const Text(
-                              "Signup as Doctor",
+                              "Signup As Doctor",
+                              style: TextStyle(
+                                color: Color(0xFF097969),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
+                      child: Row(
+                        children: [
+                          const Text(
+                            "Not a Doctor ? ",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Signin(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              "Signin as a User",
                               style: TextStyle(
                                 color: Color(0xFF097969),
                                 fontWeight: FontWeight.bold,

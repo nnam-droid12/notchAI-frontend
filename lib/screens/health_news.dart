@@ -9,6 +9,7 @@ class HealthNews extends StatefulWidget {
   const HealthNews({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _HealthNewsState createState() => _HealthNewsState();
 }
 
@@ -49,7 +50,7 @@ class _HealthNewsState extends State<HealthNews> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Health News'),
-        backgroundColor: const Color(0xFF00C6AD), 
+        backgroundColor: const Color(0xFF00C6AD),
       ),
       body: ListView.builder(
         itemCount: newsData.length,

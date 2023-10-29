@@ -2,40 +2,44 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:notchai_frontend/screens/signin.dart';
-import 'package:notchai_frontend/screens/user.dart';
+import 'package:notchai_frontend/doctorRegistrationPage/doctor.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:notchai_frontend/doctorRegistrationPage/doctor_signin.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({super.key});
+class DoctorSignup extends StatefulWidget {
+  const DoctorSignup({super.key});
 
   @override
-  _SignupState createState() => _SignupState();
+  _DoctorSignupState createState() => _DoctorSignupState();
 }
 
-class _SignupState extends State<Signup> {
+class _DoctorSignupState extends State<DoctorSignup> {
   final _formKey = GlobalKey<FormState>();
 
   Future save() async {
-    var url = Uri.parse("https://notchai-backend.up.railway.app/signup");
+    var url = Uri.parse("https://notchai-backend.up.railway.app/doctor-signup");
     var res = await http.post(
       url,
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8'
       },
       body: jsonEncode(<String, String>{
-        'name': user.name,
-        'email': user.email,
-        'password': user.password
+        'name': doctor.name,
+        'hospitalname': doctor.hospitalname,
+        'specialty': doctor.specialty,
+        'email': doctor.email,
+        'yearsofexperience': doctor.yearsofexperience,
+        'batchno': doctor.batchno,
+        'password': doctor.password
       }),
     );
 
     print(res.body);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Signin()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorSignin()));
   }
 
-  User user = User('', '', '');
+  Doctor doctor = Doctor('', '', '', '', '', '', '');
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,7 @@ class _SignupState extends State<Signup> {
                       height: 150,
                     ),
                     Text(
-                      "User Signup",
+                      "Doctor Signup",
                       style: GoogleFonts.pacifico(
                         fontWeight: FontWeight.bold,
                         fontSize: 50,
@@ -78,9 +82,9 @@ class _SignupState extends State<Signup> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
-                        controller: TextEditingController(text: user.name),
+                        controller: TextEditingController(text: doctor.name),
                         onChanged: (value) {
-                          user.name = value;
+                          doctor.name = value;
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -116,9 +120,9 @@ class _SignupState extends State<Signup> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
-                        controller: TextEditingController(text: user.email),
+                        controller: TextEditingController(text: doctor.email),
                         onChanged: (value) {
-                          user.email = value;
+                          doctor.email = value;
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -159,9 +163,165 @@ class _SignupState extends State<Signup> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
-                        controller: TextEditingController(text: user.password),
+                        controller:
+                            TextEditingController(text: doctor.hospitalname),
                         onChanged: (value) {
-                          user.password = value;
+                          doctor.hospitalname = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter something';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          icon: const Icon(
+                            Icons.help_outline_sharp,
+                            color: Color(0xFF097969),
+                          ),
+                          hintText: 'Enter Hospital Name',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller:
+                            TextEditingController(text: doctor.specialty),
+                        onChanged: (value) {
+                          doctor.specialty = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter something';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          icon: const Icon(
+                            Icons.smart_display,
+                            color: Color(0xFF097969),
+                          ),
+                          hintText: 'What is Your Area of Specialization',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(
+                            text: doctor.yearsofexperience),
+                        onChanged: (value) {
+                          doctor.yearsofexperience = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter something';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          icon: const Icon(
+                            Icons.timelapse_sharp,
+                            color: Color(0xFF097969),
+                          ),
+                          hintText: 'Years of Professional Experience',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(text: doctor.batchno),
+                        onChanged: (value) {
+                          doctor.batchno = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter something';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          icon: const Icon(
+                            Icons.confirmation_number,
+                            color: Color(0xFF097969),
+                          ),
+                          hintText: 'Enter Hospital Batch Number',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.green),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller:
+                            TextEditingController(text: doctor.password),
+                        onChanged: (value) {
+                          doctor.password = value;
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -223,11 +383,11 @@ class _SignupState extends State<Signup> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(60, 20, 0, 0),
                       child: Row(
                         children: [
                           const Text(
-                            "Already have Account ? ",
+                            "Already have Doctor Account ? ",
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -238,12 +398,12 @@ class _SignupState extends State<Signup> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const Signin(),
+                                  builder: (context) => const DoctorSignin(),
                                 ),
                               );
                             },
                             child: const Text(
-                              "Signin",
+                              "Signin Doctor",
                               style: TextStyle(
                                 color: Color(0xFF097969),
                                 fontWeight: FontWeight.bold,

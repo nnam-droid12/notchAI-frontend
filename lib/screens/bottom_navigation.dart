@@ -40,8 +40,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
         showUnselectedLabels: false,
         showSelectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.blueGrey,
-        unselectedItemColor: Colors.grey, // Changed unselected color to grey
+        selectedItemColor: const Color.fromARGB(255, 11, 140, 123),
+        unselectedItemColor: const Color(0xff00c6ad), // Changed unselected color to grey
         items: [
           _buildNavBarItem(Icons.home, "Home", 0),
           _buildNavBarItem(Icons.scanner_rounded, "Scan Skin", 1),
