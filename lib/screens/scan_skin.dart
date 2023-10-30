@@ -8,7 +8,6 @@ import 'package:notchai_frontend/screens/community_home_screen.dart';
 import 'package:notchai_frontend/services/assets_manager.dart';
 import 'package:notchai_frontend/services/services.dart';
 import 'package:scanning_effect/scanning_effect.dart';
-import 'package:animated_text_kit/animated_text_kit.dart'; 
 
 class ScanTech extends StatefulWidget {
   const ScanTech({Key? key}) : super(key: key);
@@ -23,8 +22,7 @@ class _ScanTechState extends State<ScanTech> {
   static final openaiApikey = dotenv.env["OPENAI_API_KEY"];
   static final autodermApikey = dotenv.env["Autoderm_API_KEY"];
   bool isAnalyzing = false;
-  bool isGeneratingCausesAndRecommendations = false;
-  bool showResultText = false; 
+  bool showResultText = false; // Control text animation
 
   Future<void> _selectImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -103,9 +101,7 @@ class _ScanTechState extends State<ScanTech> {
                   ))
               .reduce((a, b) => a.confidence > b.confidence ? a : b);
 
-          setState(() {
-            highestAccuracyPrediction = highestConfidencePrediction;
-          });
+          highestAccuracyPrediction = highestConfidencePrediction;
         } else {
           // Handle error
         }
@@ -128,7 +124,6 @@ class _ScanTechState extends State<ScanTech> {
           AssetsManager.notchaiLogo,
           fit: BoxFit.contain,
         ),
-        
         backgroundColor: const Color(0xFF00C6AD),
         title: const Text("Scan Skin"),
         actions: [
@@ -138,10 +133,8 @@ class _ScanTechState extends State<ScanTech> {
             },
             icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
           ),
-          ],
-
+        ],
       ),
-      
       body: Stack(
         children: <Widget>[
           Container(
@@ -150,10 +143,10 @@ class _ScanTechState extends State<ScanTech> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [Color(0xFFB2FFFF), Color(0xFFB2FFFF)],
-              ),       
-              ),     
-          ),     
-        Center(
+              ),
+            ),
+          ),
+          Center(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -176,7 +169,7 @@ class _ScanTechState extends State<ScanTech> {
                               ClipRRect( 
                                 borderRadius: BorderRadius.circular(16), 
                                 child: Image.file(selectedImage!, fit: BoxFit.cover),
-                              ),
+                            ),
                               const ScanningEffect( 
                                 scanningColor: Colors.green,
                                 borderLineColor: Color(0xFF00C6AD),
@@ -235,7 +228,7 @@ class _ScanTechState extends State<ScanTech> {
                           padding: const EdgeInsets.all(20),
                         ),
                         child: isAnalyzing
-                            ?  Stack(
+                            ? const Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   Text('Scanning Image'), // Show text
@@ -293,7 +286,6 @@ class _ScanTechState extends State<ScanTech> {
                                   ElevatedButton(
                                     onPressed: () {
                                       setState(() {
-                                        isGeneratingCausesAndRecommendations = true;
                                         highestAccuracyPrediction?.showCausesAndRecommendations = true;
                                         showResultText = true; // Start the text animation
                                       });
@@ -310,18 +302,15 @@ class _ScanTechState extends State<ScanTech> {
                                     ),
                                     child: const Text('Causes and Recommendations'),
                                   ),
-                                if (showResultText) 
-                                  AnimatedTextKit(
-                                    animatedTexts: [
-                                      TyperAnimatedText(
-                                        highestAccuracyPrediction!.name,
-                                        textStyle: const TextStyle(
-                                          color: Color(0xFF00C6AD),
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ],
+                               if (showResultText) 
+                              Text(
+                                  highestAccuracyPrediction!.name,
+                                  style: const TextStyle(
+                                    color: Color(0xFF00C6AD),
+                                    fontSize: 18,
                                   ),
+                                )
+
                               ],
                             ),
                           ),
@@ -349,21 +338,11 @@ class _ScanTechState extends State<ScanTech> {
                                       ),
                                       if (causesAndRecommendations != null)
                                         for (var item in causesAndRecommendations)
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 8),
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                border: Border.all(color: const Color(0xFF00C6AD)),
-                                                borderRadius: BorderRadius.circular(10),
-                                              ),
-                                              child: Text(
-                                                item,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
+                                          Text(
+                                            '- $item',
+                                            style: const TextStyle(
+                                              color: Color(0xFF00C6AD),
+                                              fontSize: 18,
                                             ),
                                           ),
                                     ],
@@ -416,7 +395,21 @@ class Prediction {
 
   Prediction({
     required this.name,
-    required this .confidence,
+    required this.confidence,
     this.showCausesAndRecommendations = false,
   });
+}
+
+class ImagePlaceholder extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
+  const ImagePlaceholder({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Icon(
+      Icons.camera_alt,
+      color: Colors.white,
+      size: 64,
+    );
+  }
 }

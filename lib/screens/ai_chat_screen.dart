@@ -104,11 +104,15 @@ class _AiChatScreenState extends State<AiChatScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Image.asset(
-                                AssetsManager.userImage,
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.cover,
+                              // Wrap the image with a ClipRRect to add a BorderRadius
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(
+                                  AssetsManager.userImage,
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               Container(width: 20),
                               Expanded(
@@ -157,11 +161,15 @@ class _AiChatScreenState extends State<AiChatScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Image.asset(
-                                AssetsManager.companion,
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.cover,
+                              // Wrap the image with a ClipRRect to add a BorderRadius
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(
+                                  AssetsManager.companion,
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               Container(width: 20),
                               Expanded(
@@ -210,11 +218,15 @@ class _AiChatScreenState extends State<AiChatScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Image.asset(
-                                AssetsManager.voice,
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.cover,
+                              // Wrap the image with a ClipRRect to add a BorderRadius
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(
+                                  AssetsManager.voice,
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               Container(width: 20),
                               Expanded(
